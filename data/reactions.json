@@ -1,0 +1,661 @@
+{
+  "_comment": "反応データ。conditions は条件セットの配列（セット内は AND、セット間は OR）。キー: temperature{min,max}(°C), pressure{min,max}(atm), catalyst[ids], solvent[ids|'none'], activation('light'|'spark')。verification.level: standard=教科書標準反応 / simplified=簡略化あり / uncertain=不確実。verification.review: ai-draft=AI作成・人による査読待ち / human-reviewed=査読済み。",
+  "reactions": [
+    {
+      "id": "r_h2_combustion",
+      "name": "水素の燃焼",
+      "field": "physical", "topic": "熱化学・燃焼",
+      "reactants": [{ "id": "h2", "n": 2 }, { "id": "o2", "n": 1 }],
+      "products": [{ "id": "h2o", "n": 2 }],
+      "conditions": [{ "activation": "spark" }, { "temperature": { "min": 600 } }],
+      "thermo": { "dH": -571.6, "unit": "kJ（反応式あたり, H₂O(l) 生成, 298 K）" },
+      "visual": { "effect": "flash", "color": "#bfe6ff" },
+      "summary": "水素と酸素が点火により爆発的に反応し、水を生じる。",
+      "mechanism": [
+        { "title": "開始反応", "text": "点火のエネルギーで H₂ や O₂ が解離し、H· や O· などのラジカルが生じる。" },
+        { "title": "連鎖分岐", "text": "H· + O₂ → ·OH + O·、 O· + H₂ → ·OH + H· のように、1 個のラジカルから 2 個のラジカルが生じる「分岐」が起こる。ラジカル数が指数関数的に増えるため、反応は爆発的になる。" },
+        { "title": "成長・停止", "text": "·OH + H₂ → H₂O + H· で水が生成し、ラジカル同士の再結合や器壁での消失で連鎖が停止する。" }
+      ],
+      "why": "反応は大きな発熱反応（ΔH < 0）で熱力学的には常温でも有利だが、H–H（436 kJ/mol）や O=O（498 kJ/mol）の結合を切る活性化エネルギーが大きいため、常温で混ぜただけでは事実上進まない（速度論的に安定）。点火で一度ラジカルが生じると、発熱が次の反応を加速する。",
+      "knowledge": [
+        "「熱力学的に有利」と「速く進む」は別の問題である（熱力学と速度論の区別）。",
+        "連鎖分岐反応は爆発限界（圧力・組成の範囲）を示す。H₂–O₂ 系の爆発限界は反応速度論の古典的研究対象。",
+        "燃料電池では同じ反応を電気化学的に行い、ギブズエネルギー変化 ΔG を電気エネルギーとして取り出す（理論起電力 約 1.23 V）。"
+      ],
+      "failHints": {
+        "activation": "混合しただけでは反応しません。H₂–O₂ 混合気は速度論的に安定です。反応のきっかけ（活性化）を与える必要があります。"
+      },
+      "safety": { "level": "danger", "text": "爆鳴気は爆発する。現実では水素と酸素を混合して点火しないこと。" },
+      "related": ["r_ch4_combustion", "r_h2o2_decomp"],
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["P. Atkins, J. de Paula『Atkins' Physical Chemistry』（反応速度論・連鎖反応の章）", "NIST Chemistry WebBook（生成エンタルピー）"], "simplifications": "温度条件「600 °C 以上」は自然発火温度（約 500〜570 °C）を目安とした概略値。" }
+    },
+    {
+      "id": "r_ch4_combustion",
+      "name": "メタンの燃焼",
+      "field": "physical", "topic": "熱化学・燃焼",
+      "reactants": [{ "id": "ch4", "n": 1 }, { "id": "o2", "n": 2 }],
+      "products": [{ "id": "co2", "n": 1 }, { "id": "h2o", "n": 2 }],
+      "conditions": [{ "activation": "spark" }, { "temperature": { "min": 600 } }],
+      "thermo": { "dH": -890.3, "unit": "kJ/mol（H₂O(l) 生成, 298 K）" },
+      "visual": { "effect": "flash", "color": "#7fb2ff" },
+      "summary": "メタンが酸素と完全燃焼し、二酸化炭素と水を生じる。",
+      "mechanism": [
+        { "title": "ラジカル連鎖", "text": "高温で CH₄ から H が引き抜かれて ·CH₃ が生じ、O₂ と反応して酸化が連鎖的に進む。実際の燃焼は数百の素反応からなる複雑なネットワークである。" },
+        { "title": "最終生成物", "text": "酸素が十分にあれば炭素は CO₂、水素は H₂O になる（完全燃焼）。酸素不足では CO や煤（C）が生じる（不完全燃焼）。" }
+      ],
+      "why": "C=O（CO₂ 中 約 799 kJ/mol）や O–H（約 463 kJ/mol）の強い結合が新たにできるため、大きな発熱となる。ただし活性化エネルギーが大きいので、点火が必要。",
+      "knowledge": [
+        "標準燃焼エンタルピー ΔcH° はヘスの法則で生成エンタルピーから計算できる：ΔH = Σ ΔfH(生成物) − Σ ΔfH(反応物)。",
+        "燃焼熱をボンベ熱量計で測ると定容条件の ΔU が得られ、ΔH = ΔU + Δn(gas)RT で換算する。"
+      ],
+      "failHints": { "activation": "可燃性ガスと酸素を混ぜても、点火源がなければ燃焼は始まりません。" },
+      "safety": { "level": "danger", "text": "メタンと空気の混合気（約 5〜15 vol%）は爆発範囲にある。ガス漏れ時は火気厳禁。" },
+      "related": ["r_h2_combustion"],
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["NIST Chemistry WebBook（燃焼エンタルピー）", "P. Atkins『Atkins' Physical Chemistry』（熱化学）"], "simplifications": "完全燃焼のみを扱う。" }
+    },
+    {
+      "id": "r_haber",
+      "name": "アンモニア合成（ハーバー・ボッシュ法）",
+      "field": "physical", "topic": "化学平衡・触媒",
+      "reactants": [{ "id": "n2", "n": 1 }, { "id": "h2", "n": 3 }],
+      "products": [{ "id": "nh3", "n": 2 }],
+      "reversible": true,
+      "conditions": [{ "catalyst": ["fe"], "temperature": { "min": 350 }, "pressure": { "min": 100 } }],
+      "advisories": [
+        { "when": { "temperature": { "min": 551 } }, "text": "高温すぎます。発熱反応なので温度を上げると平衡が左に移動し、NH₃ の平衡収率が低下します。工業的には 400〜500 °C が速度と収率の妥協点です。" }
+      ],
+      "thermo": { "dH": -92.2, "unit": "kJ（反応式あたり, 298 K）" },
+      "visual": { "effect": "gas", "color": "#e6f0ff" },
+      "summary": "鉄触媒・高温・高圧のもとで窒素と水素からアンモニアを合成する。",
+      "mechanism": [
+        { "title": "解離吸着", "text": "N₂ が鉄表面に吸着し、N≡N 結合が切れて表面窒素原子 N(ad) になる。この段階が律速段階とされる。H₂ も H(ad) に解離吸着する。" },
+        { "title": "表面での水素化", "text": "N(ad) → NH(ad) → NH₂(ad) → NH₃(ad) と段階的に水素が付加する。" },
+        { "title": "脱離", "text": "NH₃ が表面から脱離して気相に出る。" }
+      ],
+      "why": "反応は発熱的で気体分子数が減少する（4 mol → 2 mol）。ル・シャトリエの原理より、低温・高圧ほど平衡は NH₃ 側に偏る。しかし低温では N≡N の切断が遅すぎるため、触媒を用い、速度と平衡収率のバランスをとった 400〜500 °C・150〜300 atm 程度で操業する。",
+      "knowledge": [
+        "触媒は活性化エネルギーを下げて平衡到達を速めるが、平衡定数（平衡の位置）は変えない。",
+        "ΔG° = −RT ln K。発熱反応では温度上昇とともに K が小さくなる（ファントホッフの式 d ln K / dT = ΔH°/RT²）。",
+        "この方法は 20 世紀の食糧生産を支え、ハーバー（1918 年）とボッシュ（1931 年）にノーベル化学賞が授与された。",
+        "生体ではニトロゲナーゼ（FeMo 補因子）が常温常圧で窒素固定を行う。"
+      ],
+      "failHints": {
+        "catalyst": "N≡N 三重結合（約 945 kJ/mol）はきわめて強く、触媒なしでは反応速度が実質ゼロです。表面で N₂ を解離吸着させる金属触媒が必要です。",
+        "temperature_low": "温度が低すぎて、触媒があっても反応速度が小さすぎます（平衡的には有利なのですが…）。",
+        "pressure_low": "圧力が低いと、気体分子数が減る方向への平衡移動が起こりにくく、NH₃ の平衡収率がきわめて低くなります（ゲーム上は「得られない」と判定）。"
+      },
+      "safety": { "level": "caution", "text": "高温高圧の水素は配管を脆化させ爆発の危険がある。工業プラントでのみ行われる。" },
+      "related": ["r_nh3_hcl"],
+      "verification": { "level": "simplified", "review": "ai-draft", "sources": ["Ullmann's Encyclopedia of Industrial Chemistry（Ammonia の項）", "G. Ertl, Angew. Chem. Int. Ed. 2008（表面反応機構, ノーベル賞講演）"], "simplifications": "工業触媒（Fe₃O₄ 由来の多孔質鉄＋K₂O・Al₂O₃ 助触媒）を「鉄」と簡略化。圧力 100 atm 未満を「収率不足で失敗」とするのはゲーム上の判定基準。" }
+    },
+    {
+      "id": "r_h2o2_decomp",
+      "name": "過酸化水素の接触分解",
+      "field": "inorganic", "topic": "触媒・不均化",
+      "reactants": [{ "id": "h2o2", "n": 2 }],
+      "products": [{ "id": "h2o", "n": 2 }, { "id": "o2", "n": 1 }],
+      "conditions": [{ "catalyst": ["mno2", "pt"], "temperature": { "min": 0, "max": 100 } }],
+      "thermo": { "dH": -196.0, "unit": "kJ（反応式あたり, 298 K）" },
+      "visual": { "effect": "bubbles", "color": "#eaf6ff" },
+      "summary": "MnO₂ を触媒として H₂O₂ が水と酸素に分解する。",
+      "mechanism": [
+        { "title": "不均化", "text": "H₂O₂ 中の O（酸化数 −1）の一部が H₂O の O（−2）に還元され、一部が O₂ の O（0）に酸化される。同じ物質が酸化剤と還元剤の両方として働く「不均化反応」である。" },
+        { "title": "不均一系触媒", "text": "MnO₂ 表面で H₂O₂ が吸着し、表面 Mn の酸化還元（Mn(IV)/Mn(III) 等）を介して電子移動が起こると考えられている。触媒自身は反応後に元に戻る。" }
+      ],
+      "why": "分解は熱力学的に有利だが、触媒がないと活性化エネルギーが大きく遅い。触媒は別の反応経路を提供して活性化エネルギーを下げる。",
+      "knowledge": [
+        "酸化数の変化を追うことで、酸化還元反応の電子の授受を確認できる。",
+        "生体内ではカタラーゼという酵素が同じ反応を極めて速く触媒する（ターンオーバー数 10⁶ s⁻¹ 以上）。",
+        "反応速度は H₂O₂ 濃度に対しておおむね一次（一次反応の半減期は濃度によらない）。"
+      ],
+      "failHints": {
+        "catalyst": "H₂O₂ は放置しても少しずつしか分解しません。分解を劇的に速める固体の触媒を加えてみましょう。",
+        "temperature_high": "100 °C を超えると水が沸騰し、高濃度 H₂O₂ は暴走分解の危険があります。穏やかな温度で行いましょう。"
+      },
+      "safety": { "level": "caution", "text": "高濃度（30% 以上）の H₂O₂ では激しく発泡・発熱する。現実では 3% 程度で、少量の MnO₂ を用いる。" },
+      "related": ["r_h2_combustion"],
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["N. N. Greenwood, A. Earnshaw『Chemistry of the Elements』2nd ed.（過酸化水素の項）"], "simplifications": "表面反応機構の詳細は現在も研究対象であり、ここでは定性的説明にとどめる。" }
+    },
+    {
+      "id": "r_neutralization",
+      "name": "中和反応（強酸＋強塩基）",
+      "field": "inorganic", "topic": "酸と塩基",
+      "reactants": [{ "id": "hcl", "n": 1 }, { "id": "naoh", "n": 1 }],
+      "products": [{ "id": "nacl", "n": 1 }, { "id": "h2o", "n": 1 }],
+      "conditions": [{ "solvent": ["none", "h2o"], "temperature": { "min": 0, "max": 100 } }],
+      "thermo": { "dH": -56, "unit": "kJ/mol（希薄水溶液中, H₂O 1 mol あたり, 約）" },
+      "visual": { "effect": "heat", "color": "#dff3ff" },
+      "summary": "塩酸と水酸化ナトリウムが中和し、塩化ナトリウムと水を生じる。",
+      "mechanism": [
+        { "title": "本質はイオン反応", "text": "水溶液中で HCl は H₃O⁺ と Cl⁻、NaOH は Na⁺ と OH⁻ に完全に電離している。実際に起こる変化は H₃O⁺ + OH⁻ → 2H₂O だけで、Na⁺ と Cl⁻ は傍観イオンである。" }
+      ],
+      "why": "水の自己解離の逆反応であり、平衡定数は 1/Kw ≈ 10¹⁴（25 °C）ときわめて大きい。そのため事実上完全に進む。",
+      "knowledge": [
+        "強酸・強塩基の組み合わせでは、酸や塩基の種類によらず中和熱がほぼ一定（約 −56 kJ/mol）になる。反応の実体が共通の H₃O⁺ + OH⁻ → 2H₂O だからである。",
+        "中和滴定では当量点で pH が急激に変化する。強酸–強塩基の当量点は pH 7（25 °C）。",
+        "ブレンステッド・ローリーの定義：酸はプロトン供与体、塩基はプロトン受容体。"
+      ],
+      "failHints": {},
+      "safety": { "level": "caution", "text": "濃厚溶液同士の中和は発熱が大きく、沸騰・飛散のおそれがある。" },
+      "related": ["r_nahco3_hcl", "r_agno3_nacl"],
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["D. C. Harris『Quantitative Chemical Analysis』（酸塩基滴定）", "P. Atkins『Atkins' Physical Chemistry』（中和エンタルピー）"], "simplifications": "" }
+    },
+    {
+      "id": "r_nahco3_hcl",
+      "name": "炭酸水素ナトリウムと塩酸",
+      "field": "inorganic", "topic": "酸と塩基・弱酸の遊離",
+      "reactants": [{ "id": "nahco3", "n": 1 }, { "id": "hcl", "n": 1 }],
+      "products": [{ "id": "nacl", "n": 1 }, { "id": "h2o", "n": 1 }, { "id": "co2", "n": 1 }],
+      "conditions": [{ "solvent": ["none", "h2o"], "temperature": { "min": 0, "max": 100 } }],
+      "visual": { "effect": "bubbles", "color": "#f2f8ff" },
+      "summary": "強酸が弱酸の塩から弱酸（炭酸）を遊離させ、炭酸が CO₂ と水に分解して発泡する。",
+      "mechanism": [
+        { "title": "プロトン移動", "text": "HCO₃⁻ + H₃O⁺ → H₂CO₃ + H₂O。強酸のプロトンが、より強い塩基である HCO₃⁻ に移る。" },
+        { "title": "脱炭酸", "text": "H₂CO₃ ⇌ CO₂ + H₂O。生じた CO₂ が気体として系外へ逃げるため、平衡は右へ進み続ける。" }
+      ],
+      "why": "酸塩基反応は「強い酸＋強い塩基 → 弱い酸＋弱い塩基」の方向に進む。HCl（pKa ≈ −6）は H₂CO₃（pKa₁ ≈ 6.35）よりはるかに強い酸なので、プロトンが炭酸水素イオンに移る。さらに気体の放出が平衡を押し進める。",
+      "knowledge": [
+        "pKa の差から、酸塩基反応の平衡定数 K = 10^(pKa(生成酸) − pKa(反応酸)) を見積もれる。",
+        "血液の pH は H₂CO₃/HCO₃⁻ 緩衝系で約 7.4 に保たれている（ヘンダーソン・ハッセルバルヒの式）。"
+      ],
+      "failHints": {},
+      "safety": { "level": "info", "text": "比較的安全な反応。密閉容器では CO₂ により内圧が上がるので注意。" },
+      "related": ["r_neutralization", "r_nahco3_heat", "r_limewater"],
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["D. C. Harris『Quantitative Chemical Analysis』（炭酸系の平衡）"], "simplifications": "" }
+    },
+    {
+      "id": "r_nahco3_heat",
+      "name": "炭酸水素ナトリウムの熱分解",
+      "field": "inorganic", "topic": "熱分解",
+      "reactants": [{ "id": "nahco3", "n": 2 }],
+      "products": [{ "id": "na2co3", "n": 1 }, { "id": "h2o", "n": 1 }, { "id": "co2", "n": 1 }],
+      "conditions": [{ "temperature": { "min": 100, "max": 800 } }],
+      "thermo": { "dH": 136, "unit": "kJ（反応式あたり, H₂O(g) 生成として概算, 298 K 標準値より）" },
+      "visual": { "effect": "gas", "color": "#ffffff" },
+      "summary": "加熱により炭酸ナトリウム・水・二酸化炭素に分解する（ベーキングパウダーが膨らむ原理）。",
+      "mechanism": [
+        { "title": "固体内の酸塩基反応", "text": "結晶中で 2HCO₃⁻ → CO₃²⁻ + H₂CO₃ に相当するプロトン移動が起こり、H₂CO₃ が H₂O と CO₂ として抜けていく。" }
+      ],
+      "why": "吸熱反応（ΔH > 0）だが、固体 1 種から気体 2 種が生じるためエントロピーが大きく増加する（ΔS > 0）。ΔG = ΔH − TΔS は高温で負になり、反応が自発的になる。",
+      "knowledge": [
+        "ΔH > 0, ΔS > 0 の反応は「高温で自発的」になる典型例。",
+        "Na₂CO₃ はさらに加熱しても容易には分解しない（融点 851 °C）。NaHCO₃ との熱安定性の違いで区別できる。"
+      ],
+      "failHints": { "temperature_low": "常温では分解はほとんど進みません。吸熱・エントロピー増大型の反応が自発的になる条件を考えましょう。" },
+      "safety": { "level": "info", "text": "試験管で加熱する場合、生じた水が加熱部に流れ込んで試験管が割れないよう、口を少し下げる。" },
+      "related": ["r_nahco3_hcl", "r_caco3_decomp"],
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["N. N. Greenwood, A. Earnshaw『Chemistry of the Elements』（アルカリ金属の炭酸塩）", "NIST Chemistry WebBook（生成エンタルピーからの計算値）"], "simplifications": "分解開始温度は加熱速度などに依存するため、ゲームでは 100 °C 以上を成功条件とした。" }
+    },
+    {
+      "id": "r_caco3_decomp",
+      "name": "石灰石の熱分解（焼成）",
+      "field": "physical", "topic": "化学平衡・熱分解",
+      "reactants": [{ "id": "caco3", "n": 1 }],
+      "products": [{ "id": "cao", "n": 1 }, { "id": "co2", "n": 1 }],
+      "reversible": true,
+      "conditions": [{ "temperature": { "min": 900 } }],
+      "thermo": { "dH": 178, "unit": "kJ/mol（298 K）" },
+      "visual": { "effect": "gas", "color": "#fffdf5" },
+      "summary": "炭酸カルシウムを約 900 °C 以上に加熱すると、酸化カルシウム（生石灰）と二酸化炭素に分解する。",
+      "mechanism": [
+        { "title": "不均一系平衡", "text": "CaCO₃(s) ⇌ CaO(s) + CO₂(g)。固体の活量は 1 とみなせるので、平衡定数は Kp = p(CO₂) と CO₂ の分圧だけで表される。" },
+        { "title": "分解温度", "text": "p(CO₂) が 1 atm に達する約 900 °C 以上で、大気圧下でも分解が持続的に進む。" }
+      ],
+      "why": "強い吸熱反応だが、気体が生じるためエントロピーが増大する。ΔG° = ΔH° − TΔS° が負になる高温でのみ自発的に進む。",
+      "knowledge": [
+        "不均一系平衡では、純固体・純液体は平衡定数の式に現れない。",
+        "セメント産業はこの反応により大量の CO₂ を排出する（世界の CO₂ 排出の数 % を占める）。",
+        "逆反応（CaO + CO₂ → CaCO₃）は低温で自発的。これを利用した CO₂ 回収（カルシウムルーピング）も研究されている。"
+      ],
+      "failHints": { "temperature_low": "温度が足りません。この温度では CO₂ の平衡分解圧が 1 atm に届かず、分解が持続しません。" },
+      "safety": { "level": "caution", "text": "約 900 °C の高温が必要。家庭用の火では到達しない。" },
+      "related": ["r_cao_h2o", "r_limewater", "r_nahco3_heat"],
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["P. Atkins『Atkins' Physical Chemistry』（不均一系平衡の例）", "N. N. Greenwood, A. Earnshaw『Chemistry of the Elements』（アルカリ土類金属）"], "simplifications": "分解開始温度を 900 °C で一律に判定。" }
+    },
+    {
+      "id": "r_cao_h2o",
+      "name": "生石灰の消和",
+      "field": "inorganic", "topic": "酸化物の反応",
+      "reactants": [{ "id": "cao", "n": 1 }, { "id": "h2o", "n": 1 }],
+      "products": [{ "id": "caoh2", "n": 1 }],
+      "conditions": [{ "temperature": { "min": 0, "max": 100 } }],
+      "thermo": { "dH": -65.2, "unit": "kJ/mol（298 K）" },
+      "visual": { "effect": "heat", "color": "#ffffff" },
+      "summary": "酸化カルシウムが水と激しく発熱しながら反応し、水酸化カルシウム（消石灰）になる。",
+      "mechanism": [
+        { "title": "塩基性酸化物と水", "text": "O²⁻ はきわめて強い塩基で、水からプロトンを奪う：O²⁻ + H₂O → 2OH⁻。" }
+      ],
+      "why": "O²⁻ は水中では存在できないほど強い塩基であり、プロトン化が大きな発熱を伴って進む。",
+      "knowledge": [
+        "金属の酸化物は塩基性酸化物（CaO, Na₂O）、非金属の酸化物は酸性酸化物（CO₂, SO₃）になる傾向がある。",
+        "加熱式弁当などの発熱剤にこの反応が使われる。"
+      ],
+      "failHints": {},
+      "safety": { "level": "caution", "text": "発熱で水が沸騰・飛散する。生石灰は眼に入ると重篤な損傷を起こす。" },
+      "related": ["r_caco3_decomp", "r_limewater"],
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["N. N. Greenwood, A. Earnshaw『Chemistry of the Elements』"], "simplifications": "" }
+    },
+    {
+      "id": "r_limewater",
+      "name": "石灰水と二酸化炭素",
+      "field": "analytical", "topic": "気体の検出",
+      "reactants": [{ "id": "caoh2", "n": 1 }, { "id": "co2", "n": 1 }],
+      "products": [{ "id": "caco3", "n": 1 }, { "id": "h2o", "n": 1 }],
+      "conditions": [{ "solvent": ["h2o"], "temperature": { "min": 0, "max": 60 } }],
+      "visual": { "effect": "precipitate", "color": "#ffffff", "precipitate": "#ffffff" },
+      "summary": "石灰水に CO₂ を通じると CaCO₃ の白色沈殿が生じて白く濁る。CO₂ の検出反応。",
+      "mechanism": [
+        { "title": "CO₂ の溶解と酸塩基反応", "text": "CO₂ + 2OH⁻ → CO₃²⁻ + H₂O。" },
+        { "title": "沈殿生成", "text": "Ca²⁺ + CO₃²⁻ → CaCO₃↓。イオン積が溶解度積 Ksp（約 3×10⁻⁹）を超えると沈殿する。" }
+      ],
+      "why": "Ca(OH)₂ に比べて CaCO₃ の溶解度がはるかに小さいため、沈殿として析出する。",
+      "knowledge": [
+        "CO₂ をさらに過剰に通じると CaCO₃ + CO₂ + H₂O → Ca(HCO₃)₂ となって沈殿が再び溶ける（鍾乳洞の形成と同じ化学）。",
+        "沈殿の生成条件は「イオン積 > Ksp」。"
+      ],
+      "failHints": { "solvent": "石灰水とは Ca(OH)₂ の水溶液のことです。イオン反応を起こすための溶媒が必要です。" },
+      "safety": { "level": "info", "text": "比較的安全。石灰水は塩基性なので眼に入れないこと。" },
+      "related": ["r_caco3_decomp", "r_cao_h2o", "r_nahco3_hcl"],
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["D. C. Harris『Quantitative Chemical Analysis』（溶解度積）"], "simplifications": "過剰の CO₂ による再溶解は扱わない。" }
+    },
+    {
+      "id": "r_ch4_cl2",
+      "name": "メタンの光塩素化（ラジカル置換）",
+      "field": "organic", "topic": "ラジカル反応",
+      "reactants": [{ "id": "ch4", "n": 1 }, { "id": "cl2", "n": 1 }],
+      "products": [{ "id": "ch3cl", "n": 1 }, { "id": "hcl", "n": 1 }],
+      "conditions": [{ "activation": "light", "temperature": { "min": -20, "max": 150 } }, { "temperature": { "min": 250, "max": 500 } }],
+      "thermo": { "dH": -100, "unit": "kJ/mol（約, 298 K）" },
+      "visual": { "effect": "colorChange", "color": "#dcf58c", "to": "#f4f7ff" },
+      "summary": "光（または加熱）により塩素がラジカルとなり、メタンの水素が塩素で置換される。",
+      "mechanism": [
+        { "title": "開始", "text": "Cl₂ + hν → 2Cl·。Cl–Cl 結合（約 242 kJ/mol）が光で均等開裂する。" },
+        { "title": "成長①（水素引き抜き）", "text": "Cl· + CH₄ → HCl + ·CH₃。C–H（約 439 kJ/mol）が切れ H–Cl（約 431 kJ/mol）ができる、わずかに吸熱的な段階。" },
+        { "title": "成長②", "text": "·CH₃ + Cl₂ → CH₃Cl + Cl·。再生した Cl· が次の CH₄ を攻撃し、連鎖が続く。1 個の光子で数千回の連鎖が回ることもある。" },
+        { "title": "停止", "text": "Cl· + Cl·、·CH₃ + Cl·、·CH₃ + ·CH₃ などラジカル同士の結合で連鎖が止まる（微量のエタンの生成は機構の証拠）。" }
+      ],
+      "why": "アルカンの C–H 結合は極性が小さく、イオン的な試薬とは反応しない。しかしラジカルは不対電子をもつため、結合を均等に切って水素を引き抜くことができる。光は開始段階のラジカルを供給する。",
+      "knowledge": [
+        "実際には CH₂Cl₂, CHCl₃, CCl₄ まで多段階に塩素化が進み混合物になる。CH₄ を大過剰にすると CH₃Cl の選択性が上がる（ゲームでは一置換体のみを扱う簡略化）。",
+        "臭素化は塩素化よりはるかに選択的（ハモンドの仮説：吸熱的な引き抜き段階の遷移状態は生成物ラジカルに似る）。",
+        "暗所・常温では反応しない。これは連鎖反応に開始段階が必要であることを示す。"
+      ],
+      "failHints": {
+        "activation": "暗所・常温では反応しません。Cl–Cl 結合を均等開裂させてラジカルを作るきっかけが必要です（高温でも可能）。"
+      },
+      "safety": { "level": "danger", "text": "Cl₂ は猛毒。CH₄/Cl₂ 混合気は強い光で爆発的に反応することがある。現実で試さないこと。" },
+      "related": ["r_c2h4_br2"],
+      "verification": { "level": "simplified", "review": "ai-draft", "sources": ["J. Clayden et al.『Organic Chemistry』2nd ed., Oxford（ラジカル反応の章）"], "simplifications": "多置換体の生成を無視し一置換体のみとした。熱塩素化の温度範囲は概略値。" }
+    },
+    {
+      "id": "r_ethanol_to_ethylene",
+      "name": "エタノールの分子内脱水（脱離反応）",
+      "field": "organic", "topic": "脱離反応",
+      "reactants": [{ "id": "c2h5oh", "n": 1 }],
+      "products": [{ "id": "c2h4", "n": 1 }, { "id": "h2o", "n": 1 }],
+      "conditions": [{ "catalyst": ["h2so4"], "temperature": { "min": 160, "max": 200 } }],
+      "thermo": { "dH": 45, "unit": "kJ/mol（気相, 約, 298 K）" },
+      "visual": { "effect": "gas", "color": "#f6f6ee" },
+      "summary": "濃硫酸の存在下、約 170 °C でエタノールから水が脱離し、エチレンが生成する。",
+      "mechanism": [
+        { "title": "① ヒドロキシ基のプロトン化", "text": "CH₃CH₂–OH + H⁺ → CH₃CH₂–OH₂⁺。OH⁻ は悪い脱離基だが、プロトン化すると中性の H₂O という良い脱離基になる。" },
+        { "title": "② E2 型の脱離", "text": "第一級のエチルカチオンは非常に不安定なので、カルボカチオンを経る E1 ではなく、塩基（HSO₄⁻ や別のアルコール）が β 水素を引き抜くと同時に H₂O が脱離する協奏的な E2 型で進むと考えられている。" },
+        { "title": "③ 生成物", "text": "C=C 二重結合ができ、エチレンが気体として系外に出る。" }
+      ],
+      "why": "脱離反応は 1 分子から 2 分子が生じるためエントロピーが増加する（ΔS > 0）。ΔG = ΔH − TΔS より、高温ほど TΔS 項が大きくなり、置換（エーテル生成）より脱離が有利になる。これが 140 °C と 170 °C で生成物が変わる理由である。",
+      "knowledge": [
+        "同じ反応物でも温度によって主生成物が変わる：約 140 °C ではジエチルエーテル（分子間脱水・置換）、約 170 °C ではエチレン（分子内脱水・脱離）。",
+        "第二級・第三級アルコールは安定なカルボカチオンを経る E1 機構で、より低温で脱水する。",
+        "ザイツェフ則：より置換基の多い（安定な）アルケンが主生成物になる（エタノールでは 1 種類のみ）。"
+      ],
+      "failHints": {
+        "catalyst": "アルコールの OH は脱離しにくい基です。脱離しやすくするために、強い酸の触媒（兼 脱水剤）が必要です。",
+        "temperature_low": "この温度ではエチレンは主生成物になりません。脱離が置換に勝つには、より高温（エントロピー項が効く温度）が必要です。",
+        "temperature_high": "高温すぎます。濃硫酸は高温で強い酸化剤として働き、炭化（黒化）や SO₂ の発生などの副反応が増えます。"
+      },
+      "safety": { "level": "danger", "text": "濃硫酸の高温加熱は危険。生じるエチレンは引火性。現実では専門の指導下でのみ行う。" },
+      "related": ["r_ethanol_to_ether", "r_ethylene_hydration", "r_c2h4_br2", "r_c2h4_h2"],
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["J. Clayden et al.『Organic Chemistry』2nd ed.（脱離反応の章）", "K. P. C. Vollhardt, N. E. Schore『Organic Chemistry』（アルコールの反応）"], "simplifications": "温度範囲 160〜200 °C は教科書記載の約 170 °C を幅をもたせたもの。第一級アルコールの機構は硫酸エチルを経由する経路も提案されている。" }
+    },
+    {
+      "id": "r_ethanol_to_ether",
+      "name": "エタノールの分子間脱水（ジエチルエーテル合成）",
+      "field": "organic", "topic": "求核置換反応",
+      "reactants": [{ "id": "c2h5oh", "n": 2 }],
+      "products": [{ "id": "et2o", "n": 1 }, { "id": "h2o", "n": 1 }],
+      "conditions": [{ "catalyst": ["h2so4"], "temperature": { "min": 125, "max": 150 } }],
+      "visual": { "effect": "colorChange", "color": "#f4f7ff", "to": "#f8faff" },
+      "summary": "濃硫酸の存在下、約 140 °C でエタノール 2 分子から水が取れ、ジエチルエーテルが生じる。",
+      "mechanism": [
+        { "title": "① プロトン化", "text": "CH₃CH₂–OH + H⁺ → CH₃CH₂–OH₂⁺（良い脱離基の生成）。" },
+        { "title": "② SN2 攻撃", "text": "もう 1 分子のエタノールの O が求核剤として、プロトン化エタノールの α 炭素を背面から攻撃し、H₂O が脱離する：CH₃CH₂OH + CH₃CH₂OH₂⁺ → (CH₃CH₂)₂OH⁺ + H₂O。" },
+        { "title": "③ 脱プロトン", "text": "(CH₃CH₂)₂OH⁺ → (CH₃CH₂)₂O + H⁺。酸触媒が再生する。" }
+      ],
+      "why": "第一級炭素は立体障害が小さく SN2 攻撃を受けやすい。比較的低温では、エントロピー的に有利な脱離よりも置換（分子数が変化しない）が優勢になる。",
+      "knowledge": [
+        "温度による生成物の切り替え：低温 → 置換（エーテル）、高温 → 脱離（アルケン）。",
+        "この方法は対称エーテルの合成に限られる。非対称エーテルにはウィリアムソン合成（RO⁻ + R'X）を用いる。"
+      ],
+      "failHints": {
+        "catalyst": "OH を良い脱離基に変えるための酸触媒が必要です。",
+        "temperature_low": "温度が低すぎて反応が遅すぎます。",
+        "temperature_high": "この温度ではエーテルではなく別の生成物（または混合物）が優勢になります。置換と脱離の競合を思い出しましょう。"
+      },
+      "safety": { "level": "danger", "text": "ジエチルエーテルは極めて引火しやすい（引火点 −45 °C）。濃硫酸の加熱も危険。" },
+      "related": ["r_ethanol_to_ethylene", "r_esterification"],
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["J. Clayden et al.『Organic Chemistry』2nd ed.（求核置換反応の章）"], "simplifications": "145〜160 °C 付近はエーテルとエチレンの混合となるため、ゲームではどちらも不成功と判定する。" }
+    },
+    {
+      "id": "r_esterification",
+      "name": "フィッシャーエステル化",
+      "field": "organic", "topic": "カルボン酸誘導体",
+      "reactants": [{ "id": "ch3cooh", "n": 1 }, { "id": "c2h5oh", "n": 1 }],
+      "products": [{ "id": "etoac", "n": 1 }, { "id": "h2o", "n": 1 }],
+      "reversible": true,
+      "conditions": [{ "catalyst": ["h2so4"], "temperature": { "min": 60, "max": 120 } }],
+      "thermo": { "note": "反応エンタルピーの絶対値は小さく、ほぼ熱的中立。温度による平衡定数の変化は小さい。" },
+      "visual": { "effect": "colorChange", "color": "#fffbea", "to": "#fff1dc" },
+      "summary": "酸触媒の存在下で酢酸とエタノールが縮合し、酢酸エチルと水が生じる平衡反応。",
+      "mechanism": [
+        { "title": "① カルボニルのプロトン化", "text": "C=O の酸素がプロトン化され、カルボニル炭素の求電子性が高まる。" },
+        { "title": "② 求核付加", "text": "エタノールの O がカルボニル炭素を攻撃し、四面体中間体ができる。" },
+        { "title": "③ プロトン移動", "text": "中間体内で OH の一つがプロトン化され、–OH₂⁺（良い脱離基）になる。" },
+        { "title": "④ 脱離", "text": "H₂O が脱離して C=O が再生する。" },
+        { "title": "⑤ 脱プロトン", "text": "プロトンが外れてエステルが生じ、酸触媒が再生する。（付加–脱離機構）" }
+      ],
+      "why": "カルボン酸のカルボニルは単独では求電子性が弱いが、プロトン化で活性化される。各段階が可逆で、全体の平衡定数は約 4 程度と大きくないため、等モル混合では約 2/3 しかエステルにならない。",
+      "knowledge": [
+        "¹⁸O で標識したエタノールを使うと ¹⁸O はエステル中に入り、水には入らない。カルボン酸側の C–O 結合（アシル–酸素結合）が切れる証拠である。",
+        "収率を上げるにはル・シャトリエの原理を利用：アルコールを過剰に用いる、生成する水を除く（ディーン・スターク装置、濃硫酸の脱水作用）。",
+        "逆反応はエステルの酸加水分解。塩基性での加水分解（けん化）は不可逆になる。"
+      ],
+      "failHints": {
+        "catalyst": "混ぜただけでは反応は非常に遅いです。カルボニル炭素の求電子性を高める触媒が必要です。",
+        "temperature_low": "温度が低く、反応が遅すぎます。加熱還流（エタノールの沸点付近）を考えましょう。",
+        "temperature_high": "高温すぎます。原料が揮発してしまい、脱水などの副反応も起こります。"
+      },
+      "safety": { "level": "caution", "text": "濃硫酸の取り扱い注意。加熱は還流冷却器を付けて行い、引火性液体なので直火を避ける。" },
+      "related": ["r_saponification", "r_ethanol_to_ether"],
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["J. Clayden et al.『Organic Chemistry』2nd ed.（カルボニル基の求核置換の章）"], "simplifications": "平衡反応だが、ゲームでは生成物が得られたものとして扱う。" }
+    },
+    {
+      "id": "r_saponification",
+      "name": "エステルのけん化（塩基性加水分解）",
+      "field": "organic", "topic": "カルボン酸誘導体",
+      "reactants": [{ "id": "etoac", "n": 1 }, { "id": "naoh", "n": 1 }],
+      "products": [{ "id": "ch3coona", "n": 1 }, { "id": "c2h5oh", "n": 1 }],
+      "conditions": [{ "solvent": ["h2o"], "temperature": { "min": 15, "max": 100 } }],
+      "visual": { "effect": "colorChange", "color": "#fff8f0", "to": "#f6fbff" },
+      "summary": "酢酸エチルを水酸化ナトリウム水溶液で加水分解すると、酢酸ナトリウムとエタノールが生じる。",
+      "mechanism": [
+        { "title": "① 求核付加", "text": "OH⁻ がエステルのカルボニル炭素を攻撃し、四面体中間体（アルコキシド）を生じる。" },
+        { "title": "② 脱離", "text": "C=O が再生し、エトキシド CH₃CH₂O⁻ が脱離して酢酸が生じる。" },
+        { "title": "③ 不可逆な酸塩基反応", "text": "酢酸（pKa 4.76）がエトキシド（共役酸 pKa 約 16）によって直ちに脱プロトン化され、酢酸イオンとエタノールになる。この段階が大きく右に偏るため、全体として不可逆になる。" }
+      ],
+      "why": "OH⁻ は強い求核剤で、触媒なしでもエステルを攻撃できる。最後のプロトン移動が熱力学的に非常に有利なため、酸性加水分解（可逆）と違って反応は完結する。",
+      "knowledge": [
+        "油脂（トリグリセリド）のけん化で石けん（脂肪酸ナトリウム）が作られる。",
+        "反応速度は [エステル][OH⁻] に比例する二次反応で、反応速度論の実験題材としてよく使われる（電導度測定で追跡できる）。",
+        "BAc2 機構（塩基性・アシル–酸素開裂・二分子）と呼ばれる。"
+      ],
+      "failHints": { "solvent": "NaOH を OH⁻ として働かせるには、溶かすための溶媒が必要です。" },
+      "safety": { "level": "caution", "text": "NaOH 水溶液は強い腐食性。保護めがね必須。" },
+      "related": ["r_esterification", "r_neutralization"],
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["J. Clayden et al.『Organic Chemistry』2nd ed.（エステルの加水分解）"], "simplifications": "" }
+    },
+    {
+      "id": "r_c2h4_h2",
+      "name": "エチレンの接触水素化",
+      "field": "organic", "topic": "付加反応・不均一系触媒",
+      "reactants": [{ "id": "c2h4", "n": 1 }, { "id": "h2", "n": 1 }],
+      "products": [{ "id": "c2h6", "n": 1 }],
+      "conditions": [
+        { "catalyst": ["pt"], "temperature": { "min": 0, "max": 150 } },
+        { "catalyst": ["ni"], "temperature": { "min": 100, "max": 250 } }
+      ],
+      "thermo": { "dH": -137, "unit": "kJ/mol（水素化熱, 298 K）" },
+      "visual": { "effect": "gas", "color": "#f3f6ff" },
+      "summary": "金属触媒の表面で水素がエチレンの C=C に付加し、エタンが生じる。",
+      "mechanism": [
+        { "title": "① 吸着", "text": "H₂ が金属表面で解離吸着し、表面 H 原子になる。エチレンも π 電子で表面に吸着する。" },
+        { "title": "② 段階的な H の移動", "text": "表面 H が 1 個ずつ炭素に移り、表面エチル種を経てエタンになる（堀内–ポラニー機構）。" },
+        { "title": "③ 脱離", "text": "飽和したエタンは表面への吸着が弱く、脱離する。" }
+      ],
+      "why": "反応は発熱的で熱力学的に有利だが、H–H の切断の活性化エネルギーが大きく、触媒なしでは進まない。金属表面が H₂ を解離させることで反応経路が変わる。",
+      "knowledge": [
+        "2 個の H が二重結合の同じ側から付加する（シン付加）。環状アルケンでは cis 体が生じる。",
+        "水素化熱はアルケンの安定性の指標になる（置換基が多いほど、trans 体ほど水素化熱が小さく安定）。",
+        "Pt や Pd は常温でも活性だが、Ni は一般に加熱が必要。"
+      ],
+      "failHints": {
+        "catalyst": "H₂ と C=C を混ぜただけでは反応しません。H–H 結合を表面で切ることができる金属触媒が必要です。",
+        "temperature_low": "この触媒は常温では活性が低く、加熱が必要です。",
+        "temperature_high": "高温すぎます。脱水素（逆反応）や分解などの副反応が起こりやすくなります。"
+      },
+      "safety": { "level": "danger", "text": "水素は引火・爆発性。微粉末の金属触媒（特に水素を吸着した Pt・Pd・ラネーNi）は空気中で発火することがある。" },
+      "related": ["r_ethanol_to_ethylene", "r_c2h4_br2"],
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["J. Clayden et al.『Organic Chemistry』2nd ed.（アルケンの反応）", "G. A. Somorjai『Introduction to Surface Chemistry and Catalysis』"], "simplifications": "触媒ごとの温度範囲は目安。" }
+    },
+    {
+      "id": "r_c2h4_br2",
+      "name": "エチレンへの臭素付加",
+      "field": "organic", "topic": "求電子付加反応",
+      "reactants": [{ "id": "c2h4", "n": 1 }, { "id": "br2", "n": 1 }],
+      "products": [{ "id": "c2h4br2", "n": 1 }],
+      "conditions": [{ "solvent": ["ccl4", "none"], "temperature": { "min": -30, "max": 60 } }],
+      "visual": { "effect": "colorChange", "color": "#c0502e", "to": "#f4f4f4" },
+      "summary": "臭素の赤褐色が消え、1,2-ジブロモエタンが生じる。C=C 二重結合の検出反応。",
+      "mechanism": [
+        { "title": "① 誘起分極", "text": "Br₂ がアルケンの π 電子雲に近づくと分極し（Brδ+–Brδ−）、求電子剤として働く。" },
+        { "title": "② ブロモニウムイオンの生成", "text": "π 電子が Br を攻撃し、Br⁻ が外れて三員環のブロモニウムイオン中間体ができる。" },
+        { "title": "③ アンチ付加", "text": "Br⁻ がブロモニウムイオンの反対側（背面）から炭素を攻撃して環を開く。2 個の Br は互いに反対側から付加する（アンチ付加）。" }
+      ],
+      "why": "C=C の π 電子は核に強く束縛されておらず、求電子剤の攻撃を受けやすい。開いたカルボカチオンではなく橋かけブロモニウムイオンを経るため、立体特異的なアンチ付加になる。",
+      "knowledge": [
+        "シクロヘキセンへの臭素付加では trans-1,2-ジブロモシクロヘキサンのみが生じる。これがブロモニウムイオン機構の証拠。",
+        "溶媒が水だと、水が Br⁻ と競争してブロモニウムイオンを攻撃し、ブロモヒドリンが主生成物になる（溶媒の選択で生成物が変わる例）。",
+        "臭素水や臭素の溶液の脱色は、アルケン・アルキンの簡易検出法。"
+      ],
+      "failHints": {
+        "solvent": "この溶媒では Br⁻ 以外の求核剤が中間体を攻撃し、別の生成物になってしまいます。無極性の溶媒を使うと 1,2-ジブロモ体が得られます。"
+      },
+      "safety": { "level": "danger", "text": "臭素は猛毒・腐食性、CCl₄ は毒性・発がん性の疑いがある。現実の教育現場ではより安全な代替法を用いる。" },
+      "related": ["r_c2h4_br2_water", "r_c2h4_h2", "r_ch4_cl2"],
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["J. Clayden et al.『Organic Chemistry』2nd ed.（アルケンへの求電子付加）"], "simplifications": "" }
+    },
+    {
+      "id": "r_c2h4_br2_water",
+      "name": "ブロモヒドリンの生成（臭素水との反応）",
+      "field": "organic", "topic": "求電子付加反応",
+      "reactants": [{ "id": "c2h4", "n": 1 }, { "id": "br2", "n": 1 }, { "id": "h2o", "n": 1 }],
+      "products": [{ "id": "bromoethanol", "n": 1 }, { "id": "hbr", "n": 1 }],
+      "conditions": [{ "temperature": { "min": 0, "max": 60 } }],
+      "visual": { "effect": "colorChange", "color": "#d98a5a", "to": "#f6f6f2" },
+      "summary": "臭素水中でエチレンを反応させると、水が付加に関与し 2-ブロモエタノールが主生成物になる。",
+      "mechanism": [
+        { "title": "① ブロモニウムイオンの生成", "text": "臭素への付加と同様に、まず三員環ブロモニウムイオンが生じる。" },
+        { "title": "② 水による開環", "text": "大過剰に存在する溶媒の水が、Br⁻ より先に背面から炭素を攻撃する（濃度効果）。" },
+        { "title": "③ 脱プロトン", "text": "オキソニウムイオンからプロトンが外れ、HO–CH₂–CH₂–Br と HBr が生じる。" }
+      ],
+      "why": "中間体のブロモニウムイオンを攻撃する求核剤の競争で、生成物が決まる。水は Br⁻ より求核性は弱いが、溶媒として圧倒的に多量に存在するため、主に水が攻撃する。",
+      "knowledge": [
+        "非対称アルケンでは、OH はより置換基の多い炭素に付く（その炭素が正電荷をより多く担うため。マルコフニコフ型の位置選択性）。",
+        "ハロヒドリンを塩基で処理すると、分子内 SN2 でエポキシドが得られる。"
+      ],
+      "failHints": {},
+      "safety": { "level": "danger", "text": "臭素は猛毒・腐食性。" },
+      "related": ["r_c2h4_br2"],
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["J. Clayden et al.『Organic Chemistry』2nd ed.（ハロヒドリンの生成）"], "simplifications": "実際には 1,2-ジブロモエタンも副生する。主生成物のみを示す。" }
+    },
+    {
+      "id": "r_ethylene_hydration",
+      "name": "エチレンの直接水和（工業的エタノール合成）",
+      "field": "organic", "topic": "付加反応・化学平衡",
+      "reactants": [{ "id": "c2h4", "n": 1 }, { "id": "h2o", "n": 1 }],
+      "products": [{ "id": "c2h5oh", "n": 1 }],
+      "reversible": true,
+      "conditions": [{ "catalyst": ["h3po4"], "temperature": { "min": 250, "max": 320 }, "pressure": { "min": 50 } }],
+      "thermo": { "dH": -45, "unit": "kJ/mol（気相, 約）" },
+      "visual": { "effect": "gas", "color": "#f4f7ff" },
+      "summary": "リン酸触媒・約 300 °C・60〜70 atm でエチレンに水を付加させ、エタノールを得る。",
+      "mechanism": [
+        { "title": "① プロトン化", "text": "酸触媒の H⁺ が C=C に付加する（カルボカチオン、あるいは π 錯体的な中間体を経る）。" },
+        { "title": "② 水の付加", "text": "水が正電荷を帯びた炭素を攻撃し、オキソニウムイオンが生じる。" },
+        { "title": "③ 脱プロトン", "text": "H⁺ が外れてエタノールになり、触媒が再生する。（エタノールの酸触媒脱水の逆反応）" }
+      ],
+      "why": "発熱反応で気体分子数が減る（2 → 1）ため、平衡的には低温・高圧が有利。ただし低温では遅いので、触媒と適度な高温を用い、高圧で平衡を右に寄せる。1 回の通過での転化率は数 % と低く、未反応のエチレンを循環させて使う。",
+      "knowledge": [
+        "微視的可逆性の原理：脱水（エタノール → エチレン）と水和（エチレン → エタノール）は同じ経路を逆にたどる。どちらに進むかは条件（温度・水の量・圧力）で決まる。",
+        "実験室で同じ変換をするなら、オキシ水銀化–脱水銀化やヒドロホウ素化–酸化などの方法もある。"
+      ],
+      "failHints": {
+        "catalyst": "酸触媒がないと、C=C に水は付加しません。",
+        "pressure_low": "圧力が低すぎます。気体分子数が減る反応なので、高圧で平衡を生成物側に寄せる必要があります。",
+        "temperature_low": "温度が低すぎて、触媒の活性が不十分です。",
+        "temperature_high": "高温すぎます。発熱反応なので平衡が原料側に戻ってしまいます（脱水が優勢に）。"
+      },
+      "safety": { "level": "caution", "text": "高温高圧の可燃性ガスを扱う工業プロセス。" },
+      "related": ["r_ethanol_to_ethylene"],
+      "verification": { "level": "simplified", "review": "ai-draft", "sources": ["Ullmann's Encyclopedia of Industrial Chemistry（Ethanol の項）"], "simplifications": "工業条件（約 300 °C・60〜70 atm・シリカ担持リン酸）を幅をもたせて判定。" }
+    },
+    {
+      "id": "r_na_h2o",
+      "name": "ナトリウムと水",
+      "field": "inorganic", "topic": "酸化還元・アルカリ金属",
+      "reactants": [{ "id": "na", "n": 2 }, { "id": "h2o", "n": 2 }],
+      "products": [{ "id": "naoh", "n": 2 }, { "id": "h2", "n": 1 }],
+      "conditions": [{ "temperature": { "min": 0, "max": 100 } }],
+      "thermo": { "dH": -368.6, "unit": "kJ（反応式あたり, NaOH(aq) 生成, 298 K）" },
+      "visual": { "effect": "bubbles", "color": "#e9f4ff" },
+      "summary": "ナトリウムが水を還元して水素を発生し、水酸化ナトリウムを生じる。",
+      "mechanism": [
+        { "title": "電子移動", "text": "Na → Na⁺ + e⁻。放出された電子が水を還元する：2H₂O + 2e⁻ → H₂ + 2OH⁻。" }
+      ],
+      "why": "Na の標準電極電位（−2.71 V）は水の還元電位よりはるかに低く、電子を放出する傾向が非常に強い。",
+      "knowledge": [
+        "アルカリ金属は族を下るほど激しく反応する（Li < Na < K < Rb < Cs）。ただし E° は Li が最も負で、これは熱力学（E°）と速度論（反応の激しさ）が異なる例。",
+        "液体アンモニアに Na を溶かすと溶媒和電子が生じて青色になる（バーチ還元に利用）。"
+      ],
+      "failHints": {},
+      "safety": { "level": "danger", "text": "発熱で Na が融け、発生した H₂ に引火・爆発することがある。現実では必ず専門家の指導下で米粒大以下のみを扱う。" },
+      "related": ["r_zn_hcl"],
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["N. N. Greenwood, A. Earnshaw『Chemistry of the Elements』（アルカリ金属）"], "simplifications": "" }
+    },
+    {
+      "id": "r_zn_hcl",
+      "name": "亜鉛と塩酸",
+      "field": "inorganic", "topic": "酸化還元・イオン化傾向",
+      "reactants": [{ "id": "zn", "n": 1 }, { "id": "hcl", "n": 2 }],
+      "products": [{ "id": "zncl2", "n": 1 }, { "id": "h2", "n": 1 }],
+      "conditions": [{ "solvent": ["none", "h2o"], "temperature": { "min": 0, "max": 100 } }],
+      "visual": { "effect": "bubbles", "color": "#eef9ee" },
+      "summary": "亜鉛が塩酸に溶けて水素を発生する。",
+      "mechanism": [
+        { "title": "半反応", "text": "酸化：Zn → Zn²⁺ + 2e⁻ ／ 還元：2H⁺ + 2e⁻ → H₂。" }
+      ],
+      "why": "Zn²⁺/Zn の標準電極電位は −0.76 V で、H⁺/H₂（0 V）より低い。電池の起電力 E° = 0 − (−0.76) = +0.76 V > 0 なので、ΔG° = −nFE° < 0 となり自発的に進む。",
+      "knowledge": [
+        "ΔG° = −nFE°：電極電位から反応の自発性を判定できる。",
+        "実験室での水素発生法（キップの装置）。",
+        "銅（+0.34 V）は H⁺ を還元できないため塩酸には溶けない。"
+      ],
+      "failHints": {},
+      "safety": { "level": "caution", "text": "発生する水素は引火性。火気厳禁。" },
+      "related": ["r_na_h2o"],
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["A. J. Bard et al.『Standard Potentials in Aqueous Solution』", "P. Atkins『Atkins' Physical Chemistry』（電気化学）"], "simplifications": "" }
+    },
+    {
+      "id": "r_agno3_nacl",
+      "name": "塩化銀の沈殿生成",
+      "field": "analytical", "topic": "沈殿反応・溶解度積",
+      "reactants": [{ "id": "agno3", "n": 1 }, { "id": "nacl", "n": 1 }],
+      "products": [{ "id": "agcl", "n": 1 }, { "id": "nano3", "n": 1 }],
+      "conditions": [{ "solvent": ["h2o"], "temperature": { "min": 0, "max": 100 } }],
+      "visual": { "effect": "precipitate", "color": "#f2f6ff", "precipitate": "#ffffff" },
+      "summary": "水溶液中で Ag⁺ と Cl⁻ が出会うと、白色の AgCl 沈殿が生じる。",
+      "mechanism": [
+        { "title": "イオン反応", "text": "Ag⁺(aq) + Cl⁻(aq) → AgCl(s)。Na⁺ と NO₃⁻ は傍観イオン。" }
+      ],
+      "why": "AgCl の溶解度積は Ksp = 1.8×10⁻¹⁰ と非常に小さく、[Ag⁺][Cl⁻] がこれを超えると直ちに沈殿する。Ag⁺ は軟らかい酸、Cl⁻ は比較的軟らかい塩基で、共有結合性の高い結晶をつくる（HSAB 則）。",
+      "knowledge": [
+        "AgCl（白）、AgBr（淡黄）、AgI（黄）と、ハロゲン化銀は色と溶解度（Ksp）が異なる。",
+        "モール法：クロム酸イオンを指示薬にした Cl⁻ の沈殿滴定。",
+        "AgCl はアンモニア水に [Ag(NH₃)₂]⁺ として溶ける（錯形成）。"
+      ],
+      "failHints": { "solvent": "固体同士を混ぜてもイオンは動けません。イオンが出会える溶媒が必要です。" },
+      "safety": { "level": "caution", "text": "硝酸銀は皮膚に付くと黒く着色する。保護手袋を着用。" },
+      "related": ["r_neutralization"],
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["D. C. Harris『Quantitative Chemical Analysis』（沈殿滴定・溶解度積）"], "simplifications": "" }
+    },
+    {
+      "id": "r_fe_s",
+      "name": "鉄と硫黄の化合",
+      "field": "inorganic", "topic": "固体反応",
+      "reactants": [{ "id": "fe", "n": 1 }, { "id": "s", "n": 1 }],
+      "products": [{ "id": "fes", "n": 1 }],
+      "conditions": [{ "temperature": { "min": 300 } }],
+      "thermo": { "dH": -100, "unit": "kJ/mol（298 K）" },
+      "visual": { "effect": "flash", "color": "#ffb347" },
+      "summary": "鉄粉と硫黄の混合物を加熱すると、発熱しながら硫化鉄(II)が生成する。",
+      "mechanism": [
+        { "title": "固相・液相での反応", "text": "加熱で融けた硫黄（融点 115 °C）が鉄粒子表面と反応し始める。いったん始まると反応熱で周囲が加熱され、加熱をやめても反応が自己伝播する。" }
+      ],
+      "why": "反応は発熱的だが、固体同士では原子の拡散が遅く、常温ではほとんど進まない。加熱で反応が開始すれば、その発熱で反応が持続する。",
+      "knowledge": [
+        "混合物（Fe + S）は磁石に引き寄せられるが、化合物 FeS は（ほとんど）引き寄せられない。混合物と化合物の違いを示す古典的実験。",
+        "実際の FeS は組成がわずかに Fe 不足の不定比化合物（Fe₁₋ₓS）になりやすい。"
+      ],
+      "failHints": { "temperature_low": "固体同士の反応は、常温では原子の拡散が遅すぎて進みません。反応を開始させる操作が必要です。" },
+      "safety": { "level": "caution", "text": "反応時に激しく発熱する。生成物に酸を加えると猛毒の H₂S が発生する。" },
+      "related": ["r_cu_o2"],
+      "verification": { "level": "simplified", "review": "ai-draft", "sources": ["N. N. Greenwood, A. Earnshaw『Chemistry of the Elements』（硫化物）"], "simplifications": "反応開始温度 300 °C は概略値。不定比性は無視し FeS とした。" }
+    },
+    {
+      "id": "r_cu_o2",
+      "name": "銅の酸化",
+      "field": "inorganic", "topic": "酸化還元・金属の酸化",
+      "reactants": [{ "id": "cu", "n": 2 }, { "id": "o2", "n": 1 }],
+      "products": [{ "id": "cuo", "n": 2 }],
+      "conditions": [{ "temperature": { "min": 300, "max": 1000 } }],
+      "thermo": { "dH": -314.6, "unit": "kJ（反応式あたり, 298 K）" },
+      "visual": { "effect": "colorChange", "color": "#d98a5a", "to": "#2a2626" },
+      "summary": "銅を空気（酸素）中で加熱すると、表面が黒色の酸化銅(II)になる。",
+      "mechanism": [
+        { "title": "酸化被膜の成長", "text": "表面で Cu が酸化されて酸化物層ができ、イオンが酸化物層を拡散することで層が厚くなる（高温ほど拡散が速い）。低温側や酸素不足では赤色の Cu₂O も生じる。" }
+      ],
+      "why": "金属銅は常温でも熱力学的には酸化されうるが、反応速度が小さい。加熱で拡散と反応が速くなる。",
+      "knowledge": [
+        "エリンガム図（ΔG°–T 図）で金属酸化物の安定性を比較できる。Cu の酸化物は Al や Fe の酸化物より不安定で、還元されやすい。",
+        "加熱した CuO に H₂ を通じると Cu に戻る（CuO + H₂ → Cu + H₂O）。"
+      ],
+      "failHints": { "temperature_low": "常温では銅の酸化は極めて遅いです。" },
+      "safety": { "level": "caution", "text": "高温の金属によるやけどに注意。" },
+      "related": ["r_fe_s"],
+      "verification": { "level": "simplified", "review": "ai-draft", "sources": ["N. N. Greenwood, A. Earnshaw『Chemistry of the Elements』（銅）"], "simplifications": "Cu₂O の生成を無視し CuO のみとした。温度範囲は概略値。" }
+    },
+    {
+      "id": "r_nh3_hcl",
+      "name": "アンモニアと塩化水素（白煙の生成）",
+      "field": "inorganic", "topic": "酸と塩基・気体の検出",
+      "reactants": [{ "id": "nh3", "n": 1 }, { "id": "hcl", "n": 1 }],
+      "products": [{ "id": "nh4cl", "n": 1 }],
+      "conditions": [{ "temperature": { "min": -30, "max": 300 } }],
+      "thermo": { "dH": -176, "unit": "kJ/mol（NH₄Cl(s) 生成, 298 K）" },
+      "visual": { "effect": "smoke", "color": "#ffffff" },
+      "summary": "NH₃ と HCl の気体が出会うと、塩化アンモニウムの微結晶が白煙として生じる。",
+      "mechanism": [
+        { "title": "プロトン移動", "text": "NH₃ の N の非共有電子対が HCl の H⁺ を受け取り、NH₄⁺ と Cl⁻ が生じて固体の微粒子となる。" }
+      ],
+      "why": "NH₃ はブレンステッド塩基、HCl は強い酸。気相でも酸塩基反応が起こり、イオン結晶の格子エネルギーの寄与もあって大きく発熱する。",
+      "knowledge": [
+        "濃塩酸を付けたガラス棒をアンモニアに近づけて白煙を見る方法は、NH₃（または HCl）の検出法。",
+        "300 °C 以上に加熱すると逆反応（解離）が起こる：NH₄Cl ⇌ NH₃ + HCl。",
+        "NH₃ と HCl をガラス管の両端から拡散させると、白煙は HCl 側に近い位置にできる（グレアムの法則：軽い NH₃ の方が速く拡散する）。"
+      ],
+      "failHints": { "temperature_high": "高温では NH₄Cl は NH₃ と HCl に解離してしまいます。" },
+      "safety": { "level": "caution", "text": "NH₃・HCl とも刺激性・腐食性。換気の良い場所で。" },
+      "related": ["r_haber", "r_neutralization"],
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["N. N. Greenwood, A. Earnshaw『Chemistry of the Elements』（窒素）"], "simplifications": "" }
+    }
+  ]
+}

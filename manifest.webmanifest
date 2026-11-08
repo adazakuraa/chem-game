@@ -1,0 +1,15 @@
+{
+  "name": "ケミラボ ― 化学反応研究所",
+  "short_name": "ケミラボ",
+  "description": "大学レベルの化学を実験しながら学ぶ化学反応シミュレーションゲーム",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b1222",
+  "theme_color": "#0b1222",
+  "lang": "ja",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

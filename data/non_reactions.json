@@ -1,0 +1,38 @@
+{
+  "_comment": "「反応しない」ことが化学的に確かな組み合わせと、その理由。reagents は順不同の集合として照合する（溶媒は無視）。",
+  "nonReactions": [
+    {
+      "id": "nr_cu_hcl",
+      "reagents": ["cu", "hcl"],
+      "title": "銅は塩酸に溶けない",
+      "explanation": "Cu²⁺/Cu の標準電極電位は +0.34 V で、H⁺/H₂（0 V）より高い。E°(電池) = 0 − 0.34 = −0.34 V < 0 なので ΔG° = −nFE° > 0 となり、H⁺ は銅を酸化できない。",
+      "hint": "銅を溶かすには、H⁺ よりも強い酸化剤を含む酸（硝酸・熱濃硫酸）が必要。",
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["A. J. Bard et al.『Standard Potentials in Aqueous Solution』"] }
+    },
+    {
+      "id": "nr_nacl_h2o",
+      "reagents": ["nacl", "h2o"],
+      "title": "溶解（物理変化）",
+      "explanation": "NaCl は水に溶けて Na⁺ と Cl⁻ に解離し、それぞれが水分子に取り囲まれる（水和）。新しい物質は生じないので化学反応ではなく溶解である。溶解エンタルピーは約 +4 kJ/mol とわずかに吸熱だが、イオンの拡散によるエントロピー増大で自発的に溶ける。",
+      "hint": "溶けたイオン（Cl⁻）を沈殿として検出する試薬を考えてみよう。",
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["P. Atkins『Atkins' Physical Chemistry』（溶液の熱力学）"] }
+    },
+    {
+      "id": "nr_ch4_naoh",
+      "reagents": ["ch4", "naoh"],
+      "title": "アルカンは塩基と反応しない",
+      "explanation": "CH₄ の pKa は約 50 と見積もられ、OH⁻（共役酸 H₂O の pKa 15.7）では脱プロトン化できない。C–H 結合の極性も小さく、イオン的な試薬はほとんど作用しない（パラフィン = 親和性が小さい、が語源）。",
+      "hint": "アルカンを反応させるには、ラジカルを利用する方法がある。",
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["J. Clayden et al.『Organic Chemistry』2nd ed.（pKa の表）"] }
+    },
+    {
+      "id": "nr_n2_o2",
+      "reagents": ["n2", "o2"],
+      "maxTemperature": 1000,
+      "title": "常温では窒素と酸素は反応しない",
+      "explanation": "空気の主成分である N₂ と O₂ は常温では事実上反応しない。N≡N 結合が非常に強いためである。雷やエンジン内の高温（数千 K）では NO が生成する（サーマル NOx）が、このゲームではまだ扱っていない。",
+      "hint": "N₂ を反応させる工業的に重要な反応は、別の気体との組み合わせにある。",
+      "verification": { "level": "standard", "review": "ai-draft", "sources": ["N. N. Greenwood, A. Earnshaw『Chemistry of the Elements』（窒素）"] }
+    }
+  ]
+}
