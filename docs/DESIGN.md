@@ -161,7 +161,7 @@ TypeScript は型安全の利点があるが、ブラウザで直接実行でき
 ## 7. スマートフォンのみで開発・運用するための注意点
 
 1. **編集**：GitHub アプリ／ブラウザの github.com から直接ファイルを編集・コミットできる。ビルド不要なのでコミット＝公開。
-2. **公開設定（初回のみ）**：リポジトリの Settings → Pages → Source を「Deploy from a branch」、ブランチ `main` / `/ (root)` にする。数分後に `https://<ユーザー名>.github.io/chem-game/` で公開される。
+2. **公開設定（初回のみ）**：リポジトリの Settings → Pages → Source を「GitHub Actions」にする。`main` への push ごとに `.github/workflows/pages.yml` がデータ検証に合格した版だけを公開する。数分後に `https://<ユーザー名>.github.io/chem-game/` で公開される。
 3. **更新が反映されないとき**：Service Worker のキャッシュが原因。`sw.js` の `CACHE_VERSION` を上げてコミットすると、次回（または 2 回目）の起動で新版に切り替わる。
 4. **エラーの確認**：スマホでは開発者ツールが使えないため、エラーは**画面下部に表示**する仕組みを入れてある。データの誤りは設定画面の「検証を実行」か、GitHub の Actions タブで確認できる。
 5. **JSON 編集の注意**：カンマの付け忘れ・付けすぎで全体が読めなくなる。コミット後に Actions が赤（失敗）になったら直前の変更を確認する。

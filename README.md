@@ -23,8 +23,11 @@
 ## 公開方法（スマートフォンから）
 
 1. GitHub のリポジトリ画面 → **Settings** → **Pages**
-2. **Source** を「Deploy from a branch」、**Branch** を `main`、フォルダを `/ (root)` にして保存
-3. 数分後、`https://<ユーザー名>.github.io/chem-game/` で遊べる
+2. **Source** を「**GitHub Actions**」にする
+3. `main` に push（PR をマージ）すると、`.github/workflows/pages.yml` がデータ検証のあと自動で公開する（**Actions** タブの「GitHub Pages 公開」で進行を確認）
+4. 数分後、`https://<ユーザー名>.github.io/chem-game/` で遊べる
+
+> 404 になる場合：Source が「GitHub Actions」なのに公開ワークフローが一度も実行されていない、または Source が「Deploy from a branch」で `/docs` フォルダが選ばれている（`/docs` には index.html がない）ことが主な原因。Actions タブで「GitHub Pages 公開」を手動実行（Run workflow）すると再公開できる。
 4. ブラウザの「ホーム画面に追加」でアプリのように起動できる（セーブデータの保護にも有効）
 
 ## 化学データの追加
