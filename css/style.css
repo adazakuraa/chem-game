@@ -401,3 +401,90 @@ h4 { margin: 18px 0 6px; font-size: 14px; color: var(--accent2); }
 @media (min-width: 600px) {
   .stage { height: 300px; }
 }
+
+/* ===== Phase 2: 研究所・ミッション・レベル ===== */
+.hdr-level { display: flex; align-items: center; gap: 6px; background: var(--panel); border: 1px solid var(--line); padding: 3px 9px; border-radius: 999px; text-decoration: none; color: var(--text); }
+.hdr-level b { color: var(--warm); }
+.mini-xp { width: 38px; height: 5px; border-radius: 3px; background: rgba(255,255,255,.1); overflow: hidden; }
+.mini-xp i { display: block; height: 100%; background: var(--warm); }
+.center { text-align: center; display: block; }
+
+.banner { display: flex; align-items: center; gap: 10px; border-radius: 14px; padding: 8px 10px; border: 1px solid var(--line); background: var(--panel); text-decoration: none; color: var(--text); font-size: 13px; }
+.banner.idle { border-style: dashed; color: var(--muted); }
+.banner.idle b { margin-left: auto; color: var(--accent); font-size: 12px; }
+.banner.active { border-color: rgba(255, 176, 87, .5); background: linear-gradient(90deg, rgba(255, 176, 87, .14), var(--panel)); }
+.b-icon { font-size: 22px; }
+.b-main { flex: 1; border: none; background: none; text-align: left; padding: 0; display: flex; flex-direction: column; }
+.b-main small { font-size: 10px; color: var(--warm); }
+.b-main b { font-size: 14px; }
+.b-hint { border: 1px solid rgba(255, 176, 87, .5); background: rgba(255, 176, 87, .12); border-radius: 12px; min-width: 52px; min-height: 44px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 18px; line-height: 1.1; }
+.b-hint small { font-size: 10px; color: var(--warm); }
+.b-nohint { font-size: 11px; color: var(--muted); border: 1px solid var(--line); border-radius: 8px; padding: 2px 6px; }
+
+.level-card { display: flex; gap: 14px; align-items: center; padding: 14px; border-radius: 18px; border: 1px solid rgba(255, 176, 87, .35); background: linear-gradient(135deg, rgba(255, 176, 87, .16), rgba(122, 167, 255, .08)); }
+.lv-badge { width: 64px; height: 64px; flex: none; border-radius: 18px; display: grid; place-content: center; text-align: center; font-size: 28px; font-weight: 900; line-height: 1; color: #2a1600; background: linear-gradient(135deg, #ffd27a, var(--warm)); box-shadow: 0 6px 20px rgba(255, 176, 87, .35); }
+.lv-badge small { font-size: 11px; color: #5a3500; }
+.lv-body { flex: 1; min-width: 0; }
+.lv-title { font-weight: 800; font-size: 17px; }
+.xpbar { height: 10px; border-radius: 5px; background: rgba(0,0,0,.3); overflow: hidden; margin: 6px 0 3px; }
+.xpbar i { display: block; height: 100%; background: linear-gradient(90deg, #ffd27a, var(--warm)); border-radius: 5px; transition: width .6s; }
+.lv-sub { font-size: 12px; color: var(--muted); }
+
+.dialogue { display: flex; gap: 10px; align-items: flex-start; margin: 12px 0; }
+.avatar { flex: none; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-size: 26px; background: rgba(122, 167, 255, .16); border: 1px solid var(--line); }
+.bubble { position: relative; flex: 1; background: rgba(255,255,255,.05); border: 1px solid var(--line); border-radius: 4px 14px 14px 14px; padding: 8px 12px; font-size: 14px; }
+.bubble .who { font-weight: 800; font-size: 13px; color: var(--accent2); }
+.bubble .who small { margin-left: 6px; font-weight: 400; font-size: 11px; }
+.bubble p { margin: 2px 0 0; }
+
+.toggle { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,.03); font-size: 13px; margin: 8px 0; }
+.toggle input { width: 22px; height: 22px; accent-color: var(--accent); flex: none; }
+.chap-desc { margin: -4px 0 8px; }
+.mission-list { display: flex; flex-direction: column; gap: 8px; }
+.mission { display: flex; gap: 12px; align-items: center; padding: 11px 12px; border-radius: 14px; border: 1px solid var(--line); background: var(--panel); text-decoration: none; color: var(--text); }
+.mission .m-state { width: 30px; height: 30px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: 14px; background: rgba(255,255,255,.06); color: var(--accent); }
+.mission .m-body { display: flex; flex-direction: column; min-width: 0; }
+.mission .m-body small { font-size: 11px; }
+.mission.completed { opacity: .75; }
+.mission.completed .m-state { background: rgba(82, 227, 140, .18); color: var(--ok); font-weight: 900; }
+.mission.locked { border-style: dashed; background: transparent; color: var(--muted); }
+.mission.is-active { border-color: var(--warm); box-shadow: 0 0 0 1px var(--warm) inset; }
+.mission.available:not(.is-active) .m-state { animation: pulse 2s infinite; }
+.roadmap { list-style: none; padding: 0; margin: 0; border-left: 2px solid var(--line); }
+.roadmap li { position: relative; padding: 4px 0 10px 16px; font-size: 13px; color: var(--muted); }
+.roadmap li::before { content: ""; position: absolute; left: -7px; top: 9px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg2); border: 2px solid var(--line); }
+.roadmap li.reached { color: var(--text); }
+.roadmap li.reached::before { background: var(--warm); border-color: var(--warm); }
+.roadmap small { margin-left: 8px; }
+.roadmap span { display: block; font-size: 12px; }
+.reward-box { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; padding: 10px 14px; border-radius: 12px; background: rgba(255, 176, 87, .08); border: 1px solid rgba(255, 176, 87, .3); font-size: 14px; }
+.reward-box span { color: var(--muted); }
+.ok-box { border-color: rgba(82, 227, 140, .4); background: rgba(82, 227, 140, .08); }
+
+.hint { display: block; width: 100%; text-align: left; border-radius: 12px; padding: 10px 14px; margin: 8px 0; border: 1px solid var(--line); background: rgba(255,255,255,.03); }
+.hint b { display: block; font-size: 13px; color: var(--warm); }
+.hint p { margin: 4px 0 0; font-size: 14px; }
+.hint.locked span { font-size: 12px; color: var(--muted); }
+.hint.locked:not(:disabled) { border-color: rgba(255, 176, 87, .5); border-style: dashed; }
+.hint:disabled { opacity: .5; }
+.hint.answer b { color: var(--accent); }
+.hint.open { animation: rise-in .35s ease-out; }
+
+.xp-gain { margin: 10px 0; padding: 10px 14px; border-radius: 14px; background: linear-gradient(90deg, rgba(255, 176, 87, .18), rgba(255, 176, 87, .04)); border: 1px solid rgba(255, 176, 87, .4); animation: pop .5s .3s both; }
+.xp-gain > b { font-size: 22px; color: var(--warm); }
+.xp-gain ul { list-style: none; padding: 0; margin: 4px 0 0; font-size: 12px; color: var(--muted); }
+.xp-gain li { display: flex; justify-content: space-between; }
+.mission-clear { margin: 10px 0; padding: 10px 12px; border-radius: 14px; border: 1px solid rgba(82, 227, 140, .45); background: rgba(82, 227, 140, .08); animation: rise-in .5s .5s both; }
+.mc-head { font-weight: 800; color: var(--ok); }
+.unlock-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 10px 0; }
+.unlock { position: relative; min-width: 96px; padding: 14px 10px 8px; border-radius: 14px; border: 1px solid var(--warm); background: rgba(255, 176, 87, .1); display: flex; flex-direction: column; align-items: center; animation: pop .5s both; }
+.unlock b { font-size: 20px; }
+.levelup { text-align: center; }
+.lv-burst { display: inline-grid; place-items: center; width: 110px; height: 110px; border-radius: 50%; margin: 6px auto; font-size: 34px; font-weight: 900; color: #2a1600; background: radial-gradient(circle, #ffe6a8, var(--warm)); box-shadow: 0 0 40px rgba(255, 176, 87, .7); animation: pop .7s ease-out; }
+.levelup h2 { margin: 6px 0 0; }
+.lv-new-title { font-size: 18px; font-weight: 800; color: var(--warm); margin: 2px 0; }
+.levelup .dialogue { text-align: left; }
+@keyframes pulse { 50% { box-shadow: 0 0 0 6px rgba(63, 224, 197, .15); } }
+
+/* タブが 5 個になったので文字を小さく */
+.tabs a .tl { font-size: 10px; }

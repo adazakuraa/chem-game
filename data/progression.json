@@ -1,0 +1,22 @@
+{
+  "_comment": "研究レベルと経験値の設定。levels[].xp はそのレベルに到達するのに必要な累計経験値。unlock はレベル到達時に入手する物質。",
+  "xp": {
+    "newReaction": 50,
+    "repeatReaction": 5,
+    "newSubstance": 20,
+    "newNonReaction": 15,
+    "noHintBonus": 1.5,
+    "hintMultipliers": [1.0, 0.9, 0.75, 0.6],
+    "answerMultiplier": 0.4
+  },
+  "levels": [
+    { "level": 1,  "xp": 0,    "title": "見習い研究者" },
+    { "level": 2,  "xp": 150,  "title": "研究補助員", "unlock": ["cl2"], "message": "塩素ガスの取り扱いが許可されました。光を使う反応にも挑戦してみましょう。" },
+    { "level": 3,  "xp": 400,  "title": "学部研究生", "unlock": ["na", "ni"], "message": "金属ナトリウムとニッケル触媒が使えるようになりました。どちらも取り扱いには注意が必要です。" },
+    { "level": 4,  "xp": 750,  "title": "修士研究員", "unlock": ["h3po4"], "message": "工業触媒（担持リン酸）が使えるようになりました。工業化学の世界へようこそ。" },
+    { "level": 5,  "xp": 1200, "title": "博士研究員" },
+    { "level": 6,  "xp": 1800, "title": "主任研究員" },
+    { "level": 7,  "xp": 2600, "title": "研究室長" },
+    { "level": 8,  "xp": 3600, "title": "研究所長" }
+  ]
+}

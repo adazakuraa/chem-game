@@ -6,7 +6,7 @@ import { validateDatabase } from '../js/core/validate.js';
 const db = loadNodeDatabase();
 const { errors, warnings, stats } = validateDatabase(db);
 
-console.log(`物質 ${stats.substances} / 反応 ${stats.reactions} / 非反応 ${stats.nonReactions}`);
+console.log(`物質 ${stats.substances} / 反応 ${stats.reactions} / 非反応 ${stats.nonReactions} / 研究課題 ${stats.missions}`);
 console.log(`査読待ちの反応 ${stats.awaitingReview} / 簡略化を含む反応 ${stats.simplified}`);
 for (const w of warnings) console.log(`⚠️  ${w}`);
 for (const e of errors) console.log(`❌ ${e}`);

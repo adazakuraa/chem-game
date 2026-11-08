@@ -1,5 +1,5 @@
 {
-  "_comment": "物質データ。物性値は CRC Handbook of Chemistry and Physics 等の標準値（1 atm）。structure の種類: molecule / ionic / metal / atom。unlock: initial=最初から所持, product=生成すると入手。",
+  "_comment": "物質データ。物性値は CRC Handbook of Chemistry and Physics 等の標準値（1 atm）。structure の種類: molecule / ionic / metal / atom。unlock: initial=最初から所持 / product=生成すると入手 / reward=研究レベルやミッションの報酬で入手。",
   "substances": [
     {
       "id": "h2", "name": "水素", "nameEn": "Hydrogen", "formula": "H2",
@@ -93,7 +93,7 @@
     },
     {
       "id": "cl2", "name": "塩素", "nameEn": "Chlorine", "formula": "Cl2",
-      "category": "inorganic", "kind": "単体", "state": "gas", "color": "#dcf58c", "unlock": "initial",
+      "category": "inorganic", "kind": "単体", "state": "gas", "color": "#dcf58c", "unlock": "reward",
       "properties": { "appearance": "黄緑色・刺激臭の気体", "mp": -101.5, "bp": -34.0 },
       "description": "Cl–Cl 結合は約 242 kJ/mol と比較的弱く、紫外〜可視光で均等開裂して塩素ラジカル Cl· を生じる。",
       "uses": ["殺菌・漂白", "塩化ビニルなど有機塩素化合物の原料"],
@@ -147,7 +147,7 @@
     },
     {
       "id": "br2", "name": "臭素", "nameEn": "Bromine", "formula": "Br2",
-      "category": "inorganic", "kind": "単体", "state": "liquid", "color": "#c0502e", "unlock": "initial",
+      "category": "inorganic", "kind": "単体", "state": "liquid", "color": "#c0502e", "unlock": "reward",
       "properties": { "appearance": "赤褐色の液体（常温で液体の唯一の非金属元素）", "mp": -7.2, "bp": 58.8 },
       "description": "分極しやすい大きな電子雲をもち、アルケンの π 電子に近づくと誘起双極子を生じて求電子剤として働く。臭素の赤褐色が消える（脱色）ことは不飽和結合の検出に使われる。",
       "uses": ["不飽和結合の検出", "難燃剤・医薬の原料"],
@@ -156,7 +156,7 @@
     },
     {
       "id": "agno3", "name": "硝酸銀", "nameEn": "Silver nitrate", "formula": "AgNO3",
-      "category": "inorganic", "kind": "化合物", "state": "solid", "color": "#f2f2f5", "unlock": "initial",
+      "category": "inorganic", "kind": "化合物", "state": "solid", "color": "#f2f2f5", "unlock": "reward",
       "properties": { "appearance": "無色の結晶（光で分解し黒変）", "mp": 212 },
       "description": "水によく溶ける数少ない銀塩。ハロゲン化物イオンの検出・定量（沈殿滴定：モール法など）に用いる。",
       "uses": ["ハロゲン化物イオンの検出", "沈殿滴定", "銀鏡反応の試薬（アンモニア性硝酸銀）"],
@@ -183,7 +183,7 @@
     },
     {
       "id": "na", "name": "ナトリウム", "nameEn": "Sodium", "formula": "Na",
-      "category": "inorganic", "kind": "単体", "state": "solid", "color": "#c9ccd6", "unlock": "initial",
+      "category": "inorganic", "kind": "単体", "state": "solid", "color": "#c9ccd6", "unlock": "reward",
       "properties": { "appearance": "銀白色の軟らかい金属（ナイフで切れる）", "mp": 97.8, "bp": 883, "E0": "Na⁺/Na: −2.71 V" },
       "description": "第一イオン化エネルギーが小さく（496 kJ/mol）、強い還元剤。空気中の水分・酸素と速やかに反応するため石油（灯油）中に保存する。",
       "uses": ["有機合成の還元剤", "ナトリウムランプ", "高速炉の冷却材"],
@@ -192,7 +192,7 @@
     },
     {
       "id": "ccl4", "name": "四塩化炭素", "nameEn": "Carbon tetrachloride", "formula": "CCl4",
-      "category": "organic", "kind": "化合物", "state": "liquid", "color": "#f0f6ff", "unlock": "initial", "tags": ["solvent"],
+      "category": "organic", "kind": "化合物", "state": "liquid", "color": "#f0f6ff", "unlock": "reward", "tags": ["solvent"],
       "properties": { "appearance": "無色の液体", "mp": -22.9, "bp": 76.7 },
       "description": "無極性・非プロトン性の溶媒。歴史的にハロゲン化反応の溶媒として教科書に登場するが、毒性とオゾン層破壊のため現在はほとんど使われず、ジクロロメタンなどで代替される。",
       "uses": ["（歴史的）非極性溶媒"],
@@ -219,7 +219,7 @@
     },
     {
       "id": "ni", "name": "ニッケル", "nameEn": "Nickel", "formula": "Ni",
-      "category": "inorganic", "kind": "単体", "state": "solid", "color": "#a9b8a9", "unlock": "initial", "tags": ["catalyst"],
+      "category": "inorganic", "kind": "単体", "state": "solid", "color": "#a9b8a9", "unlock": "reward", "tags": ["catalyst"],
       "properties": { "appearance": "銀白色の金属", "mp": 1455, "bp": 2913 },
       "description": "白金より安価な水素化触媒。白金より活性が低く、一般に加熱（工業的には 100〜200 °C 程度）を要する。ラネーニッケルとして用いることが多い。",
       "uses": ["油脂の硬化（水素添加）", "めっき", "ステンレス鋼"],
@@ -237,7 +237,7 @@
     },
     {
       "id": "h3po4", "name": "リン酸（担持触媒）", "nameEn": "Phosphoric acid", "formula": "H3PO4",
-      "category": "inorganic", "kind": "化合物", "state": "solid", "color": "#f5f5ef", "unlock": "initial", "tags": ["catalyst"],
+      "category": "inorganic", "kind": "化合物", "state": "solid", "color": "#f5f5ef", "unlock": "reward", "tags": ["catalyst"],
       "properties": { "appearance": "無色の結晶（純物質）。工業触媒ではケイソウ土などに担持", "mp": 42.4, "pKa": "pKa₁ = 2.15" },
       "description": "中程度の強さの三塩基酸。エチレンの気相水和では、多孔質シリカに担持したリン酸が固体酸触媒として使われる。",
       "uses": ["エチレン水和の触媒", "肥料", "食品添加物"],

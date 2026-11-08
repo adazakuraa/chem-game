@@ -14,4 +14,5 @@ jobs:
           node-version: 20
       - run: node tools/validate.mjs
       - run: node tools/engine.test.mjs
+      - run: node tools/progress.test.mjs
       - run: node tools/precache.test.mjs
