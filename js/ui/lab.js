@@ -5,6 +5,8 @@ import { esc, $, $$, mixColors, STATE_ICON, STATE_LABEL, CATEGORY_LABEL, toast }
 import { openSheet } from './modal.js';
 import { showResult } from './result.js';
 import { showSubstanceSheet } from './zukan.js';
+import { applyResult } from '../core/progress.js';
+import { missionBannerHTML, openHintSheet } from './research.js';
 
 export const MAX_REAGENTS = 3;
 const TEMP_PRESETS = [-78, 0, 25, 80, 100, 140, 170, 300, 450, 900];
@@ -34,6 +36,7 @@ export function renderLab(root, ctx) {
 
   root.innerHTML = `
     <section class="lab">
+      <div id="missionBanner"></div>
       <div class="stage" id="stage">
         <div class="stage-bg"></div>
         <div class="env env-light" aria-hidden="true"></div>
@@ -150,7 +153,8 @@ export function renderLab(root, ctx) {
     stage.classList.toggle('pressurized', c.pressure >= 10);
   }
 
-  function drawAll() { drawSlots(); drawFlask(); drawConditions(); }
+  function drawBanner() { $('#missionBanner', root).innerHTML = missionBannerHTML(ctx); }
+  function drawAll() { drawBanner(); drawSlots(); drawFlask(); drawConditions(); }
   drawAll();
 
   // ---------- 操作 ----------
@@ -177,6 +181,8 @@ export function renderLab(root, ctx) {
       return drawAll();
     }
     if (t.id === 'btnReact') return react();
+    if (t.dataset.hint !== undefined) return openHintSheet(ctx, t.dataset.hint, drawBanner);
+    if (t.dataset.goto) { location.hash = t.dataset.goto; return; }
   });
   $('#tempRange', root).addEventListener('input', (e) => {
     const v = clampT(+e.target.value);
@@ -194,7 +200,7 @@ export function renderLab(root, ctx) {
       return openReagentPicker(ctx, drawAll);
     }
     const result = runExperiment(db, { reagents: bench, conditions: st().conditions });
-    const record = recordResult(store, db, result);
+    const record = store.update((s) => applyResult(s, result, db));
     busy = true;
     $('#btnReact', root).disabled = true;
     playEffect(stage, result, db).then(() => {
@@ -209,36 +215,6 @@ export function renderLab(root, ctx) {
       ctx.refreshHeader();
     });
   }
-}
-
-/** 結果をセーブデータに反映し、新発見情報を返す */
-export function recordResult(store, db, result) {
-  const rec = { newSubstances: [], newReaction: false, newNonReaction: false };
-  store.update((s) => {
-    s.stats.experiments++;
-    if (result.outcome === 'success') {
-      s.stats.successes++;
-      const rid = result.reaction.id;
-      const prev = s.discoveredReactions[rid];
-      if (!prev) rec.newReaction = true;
-      s.discoveredReactions[rid] = { count: (prev ? prev.count : 0) + 1, firstAt: prev ? prev.firstAt : Date.now() };
-      for (const pid of result.products) {
-        if (!s.owned.includes(pid)) {
-          s.owned.push(pid);
-          s.newSubstances.push(pid);
-          rec.newSubstances.push(pid);
-        }
-      }
-    } else if (result.outcome === 'no_reaction') {
-      if (!s.discoveredNonReactions.includes(result.nonReaction.id)) {
-        s.discoveredNonReactions.push(result.nonReaction.id);
-        rec.newNonReaction = true;
-      }
-    }
-    s.log.unshift({ t: Date.now(), reagents: result.reagents, outcome: result.outcome, reaction: result.reaction ? result.reaction.id : null });
-    s.log = s.log.slice(0, 50);
-  });
-  return rec;
 }
 
 /** 反応の演出（Promise で完了を通知） */
@@ -304,6 +280,7 @@ export function openReagentPicker(ctx, onChange) {
       <button class="chip" data-f="inorganic">無機</button>
       <button class="chip" data-f="organic">有機</button>
       <button class="chip" data-f="product">生成物</button>
+      <button class="chip" data-f="reward">報酬</button>
     </div>
     <div class="reagent-grid" id="pickGrid"></div>`, { className: 'picker' });
 
@@ -314,7 +291,7 @@ export function openReagentPicker(ctx, onChange) {
     const list = store.state.owned
       .map((id) => db.substanceMap[id])
       .filter(Boolean)
-      .filter((s) => filter === 'all' || (filter === 'product' ? s.unlock === 'product' : s.category === filter))
+      .filter((s) => filter === 'all' || (filter === 'product' || filter === 'reward' ? s.unlock === filter : s.category === filter))
       .filter((s) => !q || s.name.toLowerCase().includes(q) || s.formula.toLowerCase().includes(q) || (s.nameEn || '').toLowerCase().includes(q));
     grid.innerHTML = list.length ? list.map((s) => {
       const on = bench.includes(s.id);

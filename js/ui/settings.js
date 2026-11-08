@@ -17,7 +17,14 @@ export function renderSettings(root, ctx) {
           <tr><th>成功した実験</th><td>${s.stats.successes}</td></tr>
           <tr><th>所持物質</th><td>${s.owned.length} / ${db.substances.length}</td></tr>
           <tr><th>発見した反応</th><td>${Object.keys(s.discoveredReactions).length} / ${db.reactions.length}</td></tr>
+          <tr><th>研究レベル</th><td>Lv.${s.research.level}（${s.research.xp} XP）</td></tr>
+          <tr><th>達成した研究課題</th><td>${Object.values(s.research.missions).filter((m) => m.completed).length} / ${db.missions.length}</td></tr>
         </table>
+      </div>
+
+      <div class="panel-card">
+        <h3>学習モード</h3>
+        <label class="toggle"><input type="checkbox" id="noHint" ${s.settings.noHint ? 'checked' : ''}><span>ヒントなしモード（研究課題のヒントを非表示。自力で達成すると報酬 ×${db.progression.xp.noHintBonus}）</span></label>
       </div>
 
       <div class="panel-card">
@@ -47,6 +54,10 @@ export function renderSettings(root, ctx) {
       </div>
     </section>`;
 
+  root.querySelector('#noHint').addEventListener('change', (e) => {
+    store.update((st) => { st.settings.noHint = e.target.checked; });
+    toast(e.target.checked ? 'ヒントなしモード：ON' : 'ヒントなしモード：OFF');
+  });
   const ta = root.querySelector('#saveText');
   root.querySelector('#exp').addEventListener('click', async () => {
     const text = store.exportText();

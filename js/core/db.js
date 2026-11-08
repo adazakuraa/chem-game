@@ -6,6 +6,8 @@ export const DATA_FILES = {
   substances: 'data/substances.json',
   reactions: 'data/reactions.json',
   nonReactions: 'data/non_reactions.json',
+  missions: 'data/missions.json',
+  progression: 'data/progression.json',
 };
 
 /** 生の JSON 群からデータベースを作る */
@@ -14,6 +16,11 @@ export function buildDatabase(raw) {
   const substances = raw.substances.substances;
   const reactions = raw.reactions.reactions;
   const nonReactions = raw.nonReactions ? raw.nonReactions.nonReactions : [];
+  const missionData = raw.missions || { missions: [], chapters: [], characters: {} };
+  const missions = missionData.missions;
+  const missionMap = {};
+  for (const m of missions) missionMap[m.id] = m;
+  const progression = raw.progression || { xp: {}, levels: [{ level: 1, xp: 0, title: '' }] };
 
   const substanceMap = {};
   for (const s of substances) {
@@ -41,6 +48,11 @@ export function buildDatabase(raw) {
     nonReactions,
     asReactant,
     asProduct,
+    missions,
+    missionMap,
+    chapters: missionData.chapters || [],
+    characters: missionData.characters || {},
+    progression,
   };
 }
 

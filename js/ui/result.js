@@ -4,6 +4,7 @@ import { formulaHTML, hillFormula } from '../core/formula.js';
 import { esc, equationHTML, FIELD_LABEL, LEVEL_LABEL, REVIEW_LABEL, SAFETY_LABEL } from './util.js';
 import { openSheet } from './modal.js';
 import { renderStructure } from './structure.js';
+import { dialogueHTML, showProgressEvents } from './research.js';
 
 /** 反応の解説セクション（結果画面と反応図鑑で共通） */
 export function reactionExplanationHTML(r, db, { open = false } = {}) {
@@ -44,6 +45,21 @@ export function productCardHTML(s, db, isNew) {
   </div>`;
 }
 
+function progressHTML(record, db) {
+  let html = '';
+  if (record.xp > 0) {
+    html += `<div class="xp-gain"><b>+${record.xp} XP</b><ul>${record.breakdown.map((b) => `<li><span>${esc(b.label)}</span><span>+${b.xp}</span></li>`).join('')}</ul></div>`;
+  }
+  for (const m of record.completedMissions) {
+    html += `<div class="mission-clear"><div class="mc-head">🎉 研究課題「${esc(m.title)}」達成！</div>${dialogueHTML(db, m.debrief)}</div>`;
+  }
+  const unlockedByMission = record.unlocked.filter((id) => record.completedMissions.some((m) => (m.reward.unlock || []).includes(id)));
+  if (unlockedByMission.length) {
+    html += `<div class="unlock-list">${unlockedByMission.map((id) => `<div class="unlock"><span class="badge-new">NEW</span><b>${formulaHTML(db.substanceMap[id].formula)}</b><small>${esc(db.substanceMap[id].name)}</small></div>`).join('')}</div><p class="muted center">新しい試薬が試薬棚に追加されました</p>`;
+  }
+  return html;
+}
+
 export function showResult(result, ctx, record, onChange) {
   const { db } = ctx;
   let html = '';
@@ -60,6 +76,7 @@ export function showResult(result, ctx, record, onChange) {
     ${equationHTML(r, db)}
     <p class="cond-line">条件：${esc(condText)}</p>
     ${result.advisories.map((a) => `<div class="advisory">📝 ${esc(a)}</div>`).join('')}
+    ${progressHTML(record, db)}
     <div class="products">${r.products.map((p) => productCardHTML(db.substanceMap[p.id], db, record.newSubstances.includes(p.id))).join('')}</div>
     ${reactionExplanationHTML(r, db)}
     <div class="result-actions">
@@ -80,6 +97,7 @@ export function showResult(result, ctx, record, onChange) {
     html += `<div class="result-head neutral"><div class="burst">○</div><h2>${esc(n.title)}</h2>${record.newNonReaction ? '<div class="discovery">📝 研究ノートに記録しました</div>' : ''}</div>
     <p>${esc(n.explanation)}</p>
     <div class="advisory">💡 ${esc(n.hint)}</div>
+    ${progressHTML(record, db)}
     ${n.verification ? verificationHTML(n.verification) : ''}
     <div class="result-actions"><button class="btn primary" data-close>OK</button></div>`;
   } else {
@@ -90,7 +108,14 @@ export function showResult(result, ctx, record, onChange) {
     <div class="result-actions"><button class="btn primary" data-close>OK</button></div>`;
   }
 
-  const sheet = openSheet(html, { className: `result ${result.outcome}` });
+  let followed = false;
+  const follow = () => {
+    if (followed) return;
+    followed = true;
+    if (record.levelUps && record.levelUps.length) setTimeout(() => showProgressEvents(ctx, record, onChange), 300);
+    if (ctx.refreshHeader) ctx.refreshHeader();
+  };
+  const sheet = openSheet(html, { className: `result ${result.outcome}`, onClose: follow });
   sheet.body.addEventListener('click', (e) => {
     const b = e.target.closest('button');
     if (!b) return;

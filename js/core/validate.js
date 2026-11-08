@@ -5,6 +5,7 @@
 //  - 出典・検証状況の記載確認
 import { parseFormula, addCounts } from './formula.js';
 import { conditionSets, NONE } from './engine.js';
+import { reachableSubstances, rewardSources } from './progress.js';
 
 const LEVELS = ['standard', 'simplified', 'uncertain'];
 const REVIEWS = ['ai-draft', 'human-reviewed'];
@@ -75,7 +76,7 @@ export function validateDatabase(db) {
     }
     for (const el of Object.keys(counts)) if (!db.elements[el]) E(`物質 ${s.id}: 未登録の元素 ${el}`);
     if (!s.name) E(`物質 ${s.id}: name がありません`);
-    if (!['initial', 'product'].includes(s.unlock)) E(`物質 ${s.id}: unlock が不正 (${s.unlock})`);
+    if (!['initial', 'product', 'reward'].includes(s.unlock)) E(`物質 ${s.id}: unlock が不正 (${s.unlock})`);
     if (!s.structure) {
       W(`物質 ${s.id}: 構造データがありません`);
     } else {
@@ -170,12 +171,72 @@ export function validateDatabase(db) {
     }
   }
 
+  // --- 研究レベル ---
+  const levels = (db.progression && db.progression.levels) || [];
+  levels.forEach((l, i) => {
+    if (i > 0 && !(l.xp > levels[i - 1].xp)) E(`研究レベル ${l.level}: 必要経験値が前のレベル以下です`);
+    if (l.level !== i + 1) E(`研究レベルの番号が連続していません（${l.level}）`);
+    for (const id of l.unlock || []) if (!db.substanceMap[id]) E(`研究レベル ${l.level}: 解放物質 ${id} が未登録`);
+  });
+  const maxLevel = levels.length ? levels[levels.length - 1].level : 1;
+
+  // --- ミッション ---
+  const missions = db.missions || [];
+  const mseen = new Set();
+  const chapterIds = new Set((db.chapters || []).map((c) => c.id));
+  for (const m of missions) {
+    if (mseen.has(m.id)) E(`ミッション ID が重複: ${m.id}`);
+    mseen.add(m.id);
+    const o = m.objective || {};
+    if (o.type === 'reaction') { if (!db.reactionMap[o.id]) E(`ミッション ${m.id}: 目標の反応 ${o.id} が未登録`); }
+    else if (o.type === 'nonReaction') { if (!(db.nonReactions || []).some((n) => n.id === o.id)) E(`ミッション ${m.id}: 目標の非反応 ${o.id} が未登録`); }
+    else E(`ミッション ${m.id}: objective.type が不正 (${o.type})`);
+    if (!chapterIds.has(m.chapter)) E(`ミッション ${m.id}: 章 ${m.chapter} が未登録`);
+    for (const r of m.requires || []) if (!db.missionMap[r]) E(`ミッション ${m.id}: 前提ミッション ${r} が未登録`);
+    if ((m.minLevel || 1) > maxLevel) E(`ミッション ${m.id}: minLevel が最高レベルを超えています`);
+    if (!m.hints || m.hints.length !== 3) E(`ミッション ${m.id}: ヒントは 3 段階必要です`);
+    if (!m.answer) E(`ミッション ${m.id}: 解答解説がありません`);
+    if (!m.reward || !(m.reward.xp > 0)) E(`ミッション ${m.id}: 報酬経験値がありません`);
+    for (const id of (m.reward && m.reward.unlock) || []) if (!db.substanceMap[id]) E(`ミッション ${m.id}: 報酬物質 ${id} が未登録`);
+    for (const line of [m.briefing, m.debrief]) if (line && !db.characters[line.by]) E(`ミッション ${m.id}: 登場人物 ${line.by} が未登録`);
+  }
+  // 前提関係の循環検出
+  const visiting = new Set();
+  const visited = new Set();
+  const dfs = (id, path) => {
+    if (visiting.has(id)) { E(`ミッションの前提関係が循環しています: ${[...path, id].join(' → ')}`); return; }
+    if (visited.has(id) || !db.missionMap[id]) return;
+    visiting.add(id);
+    for (const r of db.missionMap[id].requires || []) dfs(r, [...path, id]);
+    visiting.delete(id);
+    visited.add(id);
+  };
+  missions.forEach((m) => dfs(m.id, []));
+
+  // 報酬物質の入手経路
+  const sources = rewardSources(db);
+  for (const s of db.substances) {
+    if (s.unlock === 'reward' && !sources[s.id]) E(`物質 ${s.id}: unlock=reward だが、どのレベル・ミッションでも入手できません`);
+  }
+
+  // 到達可能性（詰み防止）
+  const reach = reachableSubstances(db);
+  for (const s of db.substances) if (!reach.substances.has(s.id)) W(`物質 ${s.id}: 入手する方法がありません（到達不能）`);
+  for (const m of missions) {
+    if (m.objective.type === 'reaction' && !reach.reactions.has(m.objective.id)) E(`ミッション ${m.id}: 目標の反応に必要な物質・触媒・溶媒が揃わず達成不能です`);
+    if (m.objective.type === 'nonReaction') {
+      const n = (db.nonReactions || []).find((x) => x.id === m.objective.id);
+      if (n && !n.reagents.every((id) => reach.substances.has(id))) E(`ミッション ${m.id}: 必要な物質が入手できず達成不能です`);
+    }
+  }
+
   const stats = {
     substances: db.substances.length,
     reactions: db.reactions.length,
     nonReactions: (db.nonReactions || []).length,
     awaitingReview: db.reactions.filter((r) => r.verification && r.verification.review !== 'human-reviewed').length,
     simplified: db.reactions.filter((r) => r.verification && r.verification.level !== 'standard').length,
+    missions: missions.length,
   };
   return { errors, warnings, stats };
 }

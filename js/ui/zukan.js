@@ -3,6 +3,7 @@ import { formulaHTML, hillFormula } from '../core/formula.js';
 import { esc, STATE_LABEL, STATE_ICON, CATEGORY_LABEL, toast } from './util.js';
 import { renderStructure } from './structure.js';
 import { openSheet } from './modal.js';
+import { acquireHint } from './research.js';
 
 const BENCH_MAX = 3;
 const PROP_LABEL = {
@@ -95,9 +96,9 @@ export function renderZukan(root, ctx, id) {
   const owned = new Set(store.state.owned);
   const count = all.filter((s) => owned.has(s.id)).length;
   const pct = Math.round((count / all.length) * 100);
-  const filters = [['all', 'すべて'], ['inorganic', '無機'], ['organic', '有機'], ['product', '生成物']];
+  const filters = [['all', 'すべて'], ['inorganic', '無機'], ['organic', '有機'], ['product', '生成物'], ['reward', '報酬']];
   const f = ctx.zukanFilter || 'all';
-  const list = all.filter((s) => f === 'all' || (f === 'product' ? s.unlock === 'product' : s.category === f));
+  const list = all.filter((s) => f === 'all' || (f === 'product' || f === 'reward' ? s.unlock === f : s.category === f));
   root.innerHTML = `
     <section class="page">
       <h1 class="page-title">📘 物質図鑑</h1>
@@ -106,7 +107,7 @@ export function renderZukan(root, ctx, id) {
       <div class="card-grid">
         ${list.map((s) => owned.has(s.id)
           ? `<a class="card" href="#/zukan/${s.id}" style="--c:${s.color || '#9fd3ff'}">${store.state.newSubstances.includes(s.id) ? '<span class="badge-new">NEW</span>' : ''}<span class="c-formula">${formulaHTML(s.formula)}</span><span class="c-name">${esc(s.name)}</span></a>`
-          : `<div class="card locked"><span class="c-formula">？</span><span class="c-name">未発見</span></div>`).join('')}
+          : `<div class="card locked"><span class="c-formula">？</span><span class="c-name">${s.unlock === 'reward' ? esc(acquireHint(db, s.id)) : '未発見'}</span></div>`).join('')}
       </div>
     </section>`;
   root.querySelectorAll('[data-zf]').forEach((b) => b.addEventListener('click', () => { ctx.zukanFilter = b.dataset.zf; renderZukan(root, ctx); }));
