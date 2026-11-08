@@ -1,0 +1,1 @@
+{"type":"module","private":true,"name":"chem-game","scripts":{"validate":"node tools/validate.mjs","test":"node tools/validate.mjs && node tools/engine.test.mjs && node tools/precache.test.mjs"}}

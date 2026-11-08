@@ -1,0 +1,17 @@
+# push / PR ごとに化学データの検証とエンジンのテストを実行する。
+# スマートフォンの GitHub アプリの「Actions」タブから結果を確認できる。
+name: 化学データ検証
+on:
+  push:
+  pull_request:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node tools/validate.mjs
+      - run: node tools/engine.test.mjs
+      - run: node tools/precache.test.mjs

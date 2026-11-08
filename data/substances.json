@@ -1,0 +1,429 @@
+{
+  "_comment": "物質データ。物性値は CRC Handbook of Chemistry and Physics 等の標準値（1 atm）。structure の種類: molecule / ionic / metal / atom。unlock: initial=最初から所持, product=生成すると入手。",
+  "substances": [
+    {
+      "id": "h2", "name": "水素", "nameEn": "Hydrogen", "formula": "H2",
+      "category": "inorganic", "kind": "単体", "state": "gas", "color": "#dfe9ff", "unlock": "initial",
+      "properties": { "appearance": "無色・無臭の気体", "mp": -259.2, "bp": -252.9, "density": "0.0899 g/L（0 °C, 1 atm）" },
+      "description": "最も軽い元素の二原子分子。H–H 結合エネルギーは 436 kJ/mol と大きく、常温では反応性が低いが、点火や触媒の存在下で O₂ やアルケンと反応する。",
+      "uses": ["アンモニア合成（ハーバー・ボッシュ法）", "接触水素化", "燃料電池"],
+      "hazards": ["極めて引火性が高い。空気との混合気（爆鳴気）は点火で爆発する"],
+      "structure": { "type": "molecule", "atoms": [["H",0,0],["H",1,0]], "bonds": [[0,1,1]] }
+    },
+    {
+      "id": "o2", "name": "酸素", "nameEn": "Oxygen", "formula": "O2",
+      "category": "inorganic", "kind": "単体", "state": "gas", "color": "#e6f3ff", "unlock": "initial",
+      "properties": { "appearance": "無色・無臭の気体（液体は淡青色）", "mp": -218.8, "bp": -183.0 },
+      "description": "基底状態は三重項（不対電子 2 個をもつビラジカル）で常磁性を示す。これは分子軌道法で π* 軌道に電子が 1 個ずつ入ることで説明される（ルイス構造では説明できない例として重要）。",
+      "uses": ["燃焼・酸化剤", "製鋼", "医療用"],
+      "hazards": ["支燃性。高濃度酸素中では可燃物が激しく燃える"],
+      "structure": { "type": "molecule", "atoms": [["O",0,0],["O",1,0]], "bonds": [[0,1,2]] }
+    },
+    {
+      "id": "n2", "name": "窒素", "nameEn": "Nitrogen", "formula": "N2",
+      "category": "inorganic", "kind": "単体", "state": "gas", "color": "#e8ecff", "unlock": "initial",
+      "properties": { "appearance": "無色・無臭の気体", "mp": -210.0, "bp": -195.8 },
+      "description": "N≡N 三重結合の結合エネルギーは約 945 kJ/mol と非常に大きく、化学的に極めて不活性。この結合をいかに切るかが窒素固定（ハーバー・ボッシュ法・ニトロゲナーゼ）の本質的な課題である。",
+      "uses": ["アンモニア合成の原料", "不活性雰囲気", "液体窒素による冷却"],
+      "hazards": ["窒息性（閉所で酸素濃度を下げる）"],
+      "structure": { "type": "molecule", "atoms": [["N",0,0],["N",1,0]], "bonds": [[0,1,3]] }
+    },
+    {
+      "id": "h2o", "name": "水", "nameEn": "Water", "formula": "H2O",
+      "category": "inorganic", "kind": "化合物", "state": "liquid", "color": "#9fd3ff", "unlock": "initial", "tags": ["solvent"],
+      "properties": { "appearance": "無色の液体", "mp": 0.0, "bp": 100.0, "density": "0.997 g/cm³（25 °C）" },
+      "description": "折れ線形分子（H–O–H 約 104.5°）で大きな双極子モーメントをもつ。水素結合により分子量の割に沸点が高い。誘電率が約 78 と大きく、イオン性物質をよく溶かす極性プロトン性溶媒。",
+      "uses": ["溶媒", "反応試薬（加水分解・水和）"],
+      "hazards": [],
+      "structure": { "type": "molecule", "atoms": [["O",0,0],["H",-0.8,0.6],["H",0.8,0.6]], "bonds": [[0,1,1],[0,2,1]] }
+    },
+    {
+      "id": "hcl", "name": "塩化水素（塩酸）", "nameEn": "Hydrogen chloride", "formula": "HCl",
+      "category": "inorganic", "kind": "化合物", "state": "aq", "color": "#e9ffe9", "unlock": "initial",
+      "properties": { "appearance": "無色・刺激臭の気体。水溶液が塩酸", "mp": -114.2, "bp": -85.1, "pKa": "約 −6（水中で完全電離する強酸）" },
+      "description": "ゲーム内では主に水溶液（塩酸）として扱う。水中では HCl + H₂O → H₃O⁺ + Cl⁻ がほぼ完全に進む強酸。",
+      "uses": ["酸としての試薬", "金属の溶解", "pH 調整"],
+      "hazards": ["腐食性。気体・濃塩酸のミストは気道を強く刺激する"],
+      "structure": { "type": "molecule", "atoms": [["H",0,0],["Cl",1,0]], "bonds": [[0,1,1]] }
+    },
+    {
+      "id": "naoh", "name": "水酸化ナトリウム", "nameEn": "Sodium hydroxide", "formula": "NaOH",
+      "category": "inorganic", "kind": "化合物", "state": "solid", "color": "#f4f8ff", "unlock": "initial",
+      "properties": { "appearance": "白色の固体（潮解性）", "mp": 318, "bp": 1388 },
+      "description": "代表的な強塩基。水に溶かすと大きく発熱する。空気中の CO₂ を吸収して Na₂CO₃ を生じるため、標準液として用いる場合は標定が必要。",
+      "uses": ["中和", "エステルのけん化", "石けん・紙パルプの製造"],
+      "hazards": ["強い腐食性。特に眼に入ると失明のおそれ"],
+      "structure": { "type": "ionic", "ions": [["Na","+",1],["OH","-",1]] }
+    },
+    {
+      "id": "nacl", "name": "塩化ナトリウム", "nameEn": "Sodium chloride", "formula": "NaCl",
+      "category": "inorganic", "kind": "化合物", "state": "solid", "color": "#ffffff", "unlock": "initial",
+      "properties": { "appearance": "無色〜白色の立方晶", "mp": 801, "bp": 1465, "crystal": "岩塩型構造（配位数 6）" },
+      "description": "Na⁺ と Cl⁻ がそれぞれ面心立方格子を組み、互いに入り込んだ岩塩型構造をとる。格子エネルギーは約 787 kJ/mol。",
+      "uses": ["食塩", "塩素・水酸化ナトリウムの工業原料（電解）"],
+      "hazards": [],
+      "structure": { "type": "ionic", "ions": [["Na","+",1],["Cl","-",1]], "lattice": "rocksalt" }
+    },
+    {
+      "id": "nahco3", "name": "炭酸水素ナトリウム", "nameEn": "Sodium hydrogen carbonate", "formula": "NaHCO3",
+      "category": "inorganic", "kind": "化合物", "state": "solid", "color": "#fbfbff", "unlock": "initial",
+      "properties": { "appearance": "白色の粉末", "decomposition": "加熱すると Na₂CO₃・H₂O・CO₂ に分解（約 50 °C 付近から徐々に、100 °C 以上で顕著）" },
+      "description": "重曹。HCO₃⁻ は酸としても塩基としても働く両性イオンで、水溶液は弱塩基性（pH 約 8.3）。",
+      "uses": ["ベーキングパウダー", "制酸剤", "消火剤"],
+      "hazards": [],
+      "structure": { "type": "ionic", "ions": [["Na","+",1],["HCO3","-",1]] }
+    },
+    {
+      "id": "caco3", "name": "炭酸カルシウム", "nameEn": "Calcium carbonate", "formula": "CaCO3",
+      "category": "inorganic", "kind": "化合物", "state": "solid", "color": "#f7f3ea", "unlock": "initial",
+      "properties": { "appearance": "白色の固体（方解石・あられ石）", "decomposition": "加熱で CaO と CO₂ に分解。CO₂ の分解圧が 1 atm に達するのは約 900 °C", "solubility": "水にほとんど溶けない（Ksp ≈ 3×10⁻⁹, 25 °C）" },
+      "description": "石灰石・大理石・貝殻の主成分。CO₃²⁻ は平面三角形（D₃h）の構造をもつ。",
+      "uses": ["セメント・生石灰の原料", "製鉄の融剤"],
+      "hazards": [],
+      "structure": { "type": "ionic", "ions": [["Ca","2+",1],["CO3","2-",1]] }
+    },
+    {
+      "id": "ch4", "name": "メタン", "nameEn": "Methane", "formula": "CH4",
+      "category": "organic", "kind": "化合物", "state": "gas", "color": "#eef3ff", "unlock": "initial",
+      "properties": { "appearance": "無色・無臭の気体", "mp": -182.5, "bp": -161.5 },
+      "description": "最も単純なアルカン。炭素は sp³ 混成で正四面体形（H–C–H 109.5°）。C–H 結合は強く（約 439 kJ/mol）、極性も小さいため、イオン的な試薬とはほとんど反応しない。",
+      "uses": ["天然ガス（燃料）", "水素製造（水蒸気改質）"],
+      "hazards": ["極めて引火性が高い"],
+      "structure": { "type": "molecule", "atoms": [["C",0,0],["H",0,-1],["H",0,1],["H",-1,0],["H",1,0]], "bonds": [[0,1,1],[0,2,1],[0,3,1],[0,4,1]] }
+    },
+    {
+      "id": "cl2", "name": "塩素", "nameEn": "Chlorine", "formula": "Cl2",
+      "category": "inorganic", "kind": "単体", "state": "gas", "color": "#dcf58c", "unlock": "initial",
+      "properties": { "appearance": "黄緑色・刺激臭の気体", "mp": -101.5, "bp": -34.0 },
+      "description": "Cl–Cl 結合は約 242 kJ/mol と比較的弱く、紫外〜可視光で均等開裂して塩素ラジカル Cl· を生じる。",
+      "uses": ["殺菌・漂白", "塩化ビニルなど有機塩素化合物の原料"],
+      "hazards": ["猛毒。吸入すると肺水腫を起こす。現実の実験は必ずドラフト内で"],
+      "structure": { "type": "molecule", "atoms": [["Cl",0,0],["Cl",1,0]], "bonds": [[0,1,1]] }
+    },
+    {
+      "id": "c2h5oh", "name": "エタノール", "nameEn": "Ethanol", "formula": "C2H5OH",
+      "category": "organic", "kind": "化合物", "state": "liquid", "color": "#f4f7ff", "unlock": "initial", "tags": ["solvent"],
+      "properties": { "appearance": "無色の液体", "mp": -114.1, "bp": 78.4, "pKa": "約 16" },
+      "description": "第一級アルコール。ヒドロキシ基の酸素は求核性をもち、プロトン化されると H₂O という良い脱離基になる。条件により脱水（分子内→エチレン／分子間→エーテル）、エステル化、酸化を受ける。",
+      "uses": ["溶媒", "燃料", "消毒", "有機合成の原料"],
+      "hazards": ["引火性液体（引火点 約 13 °C）"],
+      "structure": { "type": "molecule", "atoms": [["C",0,0],["C",1,0],["O",2,0],["H",2.7,-0.6],["H",0,-1],["H",0,1],["H",-1,0],["H",1,-1],["H",1,1]], "bonds": [[0,1,1],[1,2,1],[2,3,1],[0,4,1],[0,5,1],[0,6,1],[1,7,1],[1,8,1]] }
+    },
+    {
+      "id": "ch3cooh", "name": "酢酸", "nameEn": "Acetic acid", "formula": "CH3COOH",
+      "category": "organic", "kind": "化合物", "state": "liquid", "color": "#fffbea", "unlock": "initial",
+      "properties": { "appearance": "無色・刺激臭の液体（純品は 16.6 °C 以下で凝固し氷酢酸と呼ばれる）", "mp": 16.6, "bp": 118.1, "pKa": "4.76（25 °C）" },
+      "description": "代表的なカルボン酸。共役塩基の酢酸イオンでは負電荷が 2 つの酸素に共鳴で非局在化するため、アルコールより約 10¹¹ 倍強い酸となる。",
+      "uses": ["酢酸エチル・酢酸ビニルの原料", "食酢（約 4% 水溶液）"],
+      "hazards": ["高濃度では腐食性・引火性"],
+      "structure": { "type": "molecule", "atoms": [["H3C",0,0],["C",1.1,0],["O",1.65,-0.9],["OH",1.75,0.9]], "bonds": [[0,1,1],[1,2,2],[1,3,1]] }
+    },
+    {
+      "id": "zn", "name": "亜鉛", "nameEn": "Zinc", "formula": "Zn",
+      "category": "inorganic", "kind": "単体", "state": "solid", "color": "#b9bed6", "unlock": "initial",
+      "properties": { "appearance": "青白色の金属", "mp": 419.5, "bp": 907, "E0": "Zn²⁺/Zn: −0.76 V" },
+      "description": "標準電極電位が負で、H⁺ を還元できる（イオン化傾向が水素より大きい）。両性金属で強塩基にも溶ける。",
+      "uses": ["トタン（めっき）", "乾電池の負極", "黄銅"],
+      "hazards": ["粉末は可燃性"],
+      "structure": { "type": "metal", "element": "Zn" }
+    },
+    {
+      "id": "cu", "name": "銅", "nameEn": "Copper", "formula": "Cu",
+      "category": "inorganic", "kind": "単体", "state": "solid", "color": "#d98a5a", "unlock": "initial",
+      "properties": { "appearance": "赤橙色の金属光沢", "mp": 1084.6, "bp": 2562, "E0": "Cu²⁺/Cu: +0.34 V" },
+      "description": "標準電極電位が正のため、非酸化性の酸（塩酸・希硫酸）の H⁺ では酸化されない。硝酸や熱濃硫酸のような酸化性の酸には溶ける。",
+      "uses": ["電線", "合金（青銅・黄銅）"],
+      "hazards": [],
+      "structure": { "type": "metal", "element": "Cu" }
+    },
+    {
+      "id": "h2o2", "name": "過酸化水素", "nameEn": "Hydrogen peroxide", "formula": "H2O2",
+      "category": "inorganic", "kind": "化合物", "state": "aq", "color": "#eef8ff", "unlock": "initial",
+      "properties": { "appearance": "無色の液体（ゲーム内では水溶液として扱う）", "mp": -0.4, "bp": 150.2 },
+      "description": "O–O 単結合（約 146 kJ/mol）をもち不安定。酸素の酸化数は −1 で、酸化剤にも還元剤にもなる。熱力学的には 2H₂O₂ → 2H₂O + O₂ が有利だが、触媒がないと分解は遅い。",
+      "uses": ["漂白剤", "消毒（オキシドール 約 3%）", "酸化剤"],
+      "hazards": ["高濃度品は強い酸化性・腐食性"],
+      "structure": { "type": "molecule", "atoms": [["H",-0.7,0.7],["O",0,0],["O",1,0],["H",1.7,-0.7]], "bonds": [[0,1,1],[1,2,1],[2,3,1]] }
+    },
+    {
+      "id": "br2", "name": "臭素", "nameEn": "Bromine", "formula": "Br2",
+      "category": "inorganic", "kind": "単体", "state": "liquid", "color": "#c0502e", "unlock": "initial",
+      "properties": { "appearance": "赤褐色の液体（常温で液体の唯一の非金属元素）", "mp": -7.2, "bp": 58.8 },
+      "description": "分極しやすい大きな電子雲をもち、アルケンの π 電子に近づくと誘起双極子を生じて求電子剤として働く。臭素の赤褐色が消える（脱色）ことは不飽和結合の検出に使われる。",
+      "uses": ["不飽和結合の検出", "難燃剤・医薬の原料"],
+      "hazards": ["猛毒・強い腐食性。蒸気を吸わないこと"],
+      "structure": { "type": "molecule", "atoms": [["Br",0,0],["Br",1,0]], "bonds": [[0,1,1]] }
+    },
+    {
+      "id": "agno3", "name": "硝酸銀", "nameEn": "Silver nitrate", "formula": "AgNO3",
+      "category": "inorganic", "kind": "化合物", "state": "solid", "color": "#f2f2f5", "unlock": "initial",
+      "properties": { "appearance": "無色の結晶（光で分解し黒変）", "mp": 212 },
+      "description": "水によく溶ける数少ない銀塩。ハロゲン化物イオンの検出・定量（沈殿滴定：モール法など）に用いる。",
+      "uses": ["ハロゲン化物イオンの検出", "沈殿滴定", "銀鏡反応の試薬（アンモニア性硝酸銀）"],
+      "hazards": ["腐食性。皮膚に付くと黒いしみになる"],
+      "structure": { "type": "ionic", "ions": [["Ag","+",1],["NO3","-",1]] }
+    },
+    {
+      "id": "fe", "name": "鉄", "nameEn": "Iron", "formula": "Fe",
+      "category": "inorganic", "kind": "単体", "state": "solid", "color": "#8e8e95", "unlock": "initial", "tags": ["catalyst"],
+      "properties": { "appearance": "灰白色の金属（粉末は灰黒色）", "mp": 1538, "bp": 2861 },
+      "description": "常温では体心立方構造（α鉄）。アンモニア合成の工業触媒は Fe₃O₄ を還元した多孔質の鉄に K₂O・Al₂O₃ などの助触媒を加えたもので、ゲーム内では「鉄触媒」として簡略化している。",
+      "uses": ["鋼", "アンモニア合成触媒"],
+      "hazards": ["微粉末は可燃性"],
+      "structure": { "type": "metal", "element": "Fe" }
+    },
+    {
+      "id": "s", "name": "硫黄", "nameEn": "Sulfur", "formula": "S",
+      "category": "inorganic", "kind": "単体", "state": "solid", "color": "#ffe14a", "unlock": "initial",
+      "properties": { "appearance": "黄色の固体", "mp": 115.2, "bp": 444.6 },
+      "description": "常温で安定な斜方硫黄は王冠形の環状分子 S₈ からなる。反応式では慣例的に S と書く（ゲーム内でも S で表記する簡略化）。",
+      "uses": ["硫酸の原料", "ゴムの加硫"],
+      "hazards": ["可燃性。燃えると有毒な SO₂ を生じる"],
+      "structure": { "type": "atom", "element": "S", "note": "実際は S₈ 環状分子" }
+    },
+    {
+      "id": "na", "name": "ナトリウム", "nameEn": "Sodium", "formula": "Na",
+      "category": "inorganic", "kind": "単体", "state": "solid", "color": "#c9ccd6", "unlock": "initial",
+      "properties": { "appearance": "銀白色の軟らかい金属（ナイフで切れる）", "mp": 97.8, "bp": 883, "E0": "Na⁺/Na: −2.71 V" },
+      "description": "第一イオン化エネルギーが小さく（496 kJ/mol）、強い還元剤。空気中の水分・酸素と速やかに反応するため石油（灯油）中に保存する。",
+      "uses": ["有機合成の還元剤", "ナトリウムランプ", "高速炉の冷却材"],
+      "hazards": ["水と激しく反応し、発生した H₂ に引火・爆発することがある。現実では絶対に大量の水に入れないこと"],
+      "structure": { "type": "metal", "element": "Na" }
+    },
+    {
+      "id": "ccl4", "name": "四塩化炭素", "nameEn": "Carbon tetrachloride", "formula": "CCl4",
+      "category": "organic", "kind": "化合物", "state": "liquid", "color": "#f0f6ff", "unlock": "initial", "tags": ["solvent"],
+      "properties": { "appearance": "無色の液体", "mp": -22.9, "bp": 76.7 },
+      "description": "無極性・非プロトン性の溶媒。歴史的にハロゲン化反応の溶媒として教科書に登場するが、毒性とオゾン層破壊のため現在はほとんど使われず、ジクロロメタンなどで代替される。",
+      "uses": ["（歴史的）非極性溶媒"],
+      "hazards": ["肝毒性・発がん性の疑い。モントリオール議定書で規制"],
+      "structure": { "type": "molecule", "atoms": [["C",0,0],["Cl",0,-1.1],["Cl",0,1.1],["Cl",-1.1,0],["Cl",1.1,0]], "bonds": [[0,1,1],[0,2,1],[0,3,1],[0,4,1]] }
+    },
+    {
+      "id": "mno2", "name": "酸化マンガン(IV)", "nameEn": "Manganese(IV) oxide", "formula": "MnO2",
+      "category": "inorganic", "kind": "化合物", "state": "solid", "color": "#3a3030", "unlock": "initial", "tags": ["catalyst"],
+      "properties": { "appearance": "黒褐色の粉末", "decomposition": "約 535 °C で分解" },
+      "description": "過酸化水素の分解などの不均一系触媒として働く。ルチル型構造（Mn は八面体 6 配位）。",
+      "uses": ["H₂O₂ 分解の触媒", "乾電池の正極活物質"],
+      "hazards": ["粉じんの吸入に注意"],
+      "structure": { "type": "ionic", "ions": [["Mn","4+",1],["O","2-",2]], "note": "形式電荷による表記（実際の結合には共有結合性もある）" }
+    },
+    {
+      "id": "pt", "name": "白金", "nameEn": "Platinum", "formula": "Pt",
+      "category": "inorganic", "kind": "単体", "state": "solid", "color": "#d9dce3", "unlock": "initial", "tags": ["catalyst"],
+      "properties": { "appearance": "銀白色の金属", "mp": 1768, "bp": 3825 },
+      "description": "H₂ を表面で解離吸着させるため、水素化触媒として常温でも高活性。実験室では白金黒や PtO₂（アダムス触媒）として使う。",
+      "uses": ["水素化触媒", "自動車排ガス浄化触媒", "電極"],
+      "hazards": [],
+      "structure": { "type": "metal", "element": "Pt" }
+    },
+    {
+      "id": "ni", "name": "ニッケル", "nameEn": "Nickel", "formula": "Ni",
+      "category": "inorganic", "kind": "単体", "state": "solid", "color": "#a9b8a9", "unlock": "initial", "tags": ["catalyst"],
+      "properties": { "appearance": "銀白色の金属", "mp": 1455, "bp": 2913 },
+      "description": "白金より安価な水素化触媒。白金より活性が低く、一般に加熱（工業的には 100〜200 °C 程度）を要する。ラネーニッケルとして用いることが多い。",
+      "uses": ["油脂の硬化（水素添加）", "めっき", "ステンレス鋼"],
+      "hazards": ["皮膚感作性（アレルギー）"],
+      "structure": { "type": "metal", "element": "Ni" }
+    },
+    {
+      "id": "h2so4", "name": "濃硫酸", "nameEn": "Sulfuric acid (conc.)", "formula": "H2SO4",
+      "category": "inorganic", "kind": "化合物", "state": "liquid", "color": "#fbfbf2", "unlock": "initial", "tags": ["catalyst"],
+      "properties": { "appearance": "無色・粘性の液体", "mp": 10.3, "bp": 337, "pKa": "pKa₁ ≈ −3, pKa₂ = 1.99" },
+      "description": "強酸であると同時に強い脱水作用をもつ。有機反応では酸触媒（プロトン供与体）として働き、生成する水を取り込んで平衡を生成物側へずらす役割もある。",
+      "uses": ["酸触媒", "脱水剤", "肥料・化学工業の基幹原料"],
+      "hazards": ["極めて強い腐食性。水で希釈するときは必ず「水に酸を少しずつ」加える（逆は突沸の危険）"],
+      "structure": { "type": "molecule", "atoms": [["S",0,0],["O",0,-1],["O",0,1],["HO",-1.15,0],["OH",1.15,0]], "bonds": [[0,1,2],[0,2,2],[0,3,1],[0,4,1]] }
+    },
+    {
+      "id": "h3po4", "name": "リン酸（担持触媒）", "nameEn": "Phosphoric acid", "formula": "H3PO4",
+      "category": "inorganic", "kind": "化合物", "state": "solid", "color": "#f5f5ef", "unlock": "initial", "tags": ["catalyst"],
+      "properties": { "appearance": "無色の結晶（純物質）。工業触媒ではケイソウ土などに担持", "mp": 42.4, "pKa": "pKa₁ = 2.15" },
+      "description": "中程度の強さの三塩基酸。エチレンの気相水和では、多孔質シリカに担持したリン酸が固体酸触媒として使われる。",
+      "uses": ["エチレン水和の触媒", "肥料", "食品添加物"],
+      "hazards": ["腐食性"],
+      "structure": { "type": "molecule", "atoms": [["P",0,0],["O",0,-1],["HO",-1.15,0],["OH",1.15,0],["OH",0,1.05]], "bonds": [[0,1,2],[0,2,1],[0,3,1],[0,4,1]] }
+    },
+
+    {
+      "id": "nh3", "name": "アンモニア", "nameEn": "Ammonia", "formula": "NH3",
+      "category": "inorganic", "kind": "化合物", "state": "gas", "color": "#eef5ff", "unlock": "product",
+      "properties": { "appearance": "無色・刺激臭の気体", "mp": -77.7, "bp": -33.3, "pKb": "4.75（25 °C）" },
+      "description": "三角錐形分子（H–N–H 約 107°）。N 上の非共有電子対によりブレンステッド塩基・ルイス塩基として働き、金属イオンの配位子（例：[Cu(NH₃)₄]²⁺）にもなる。",
+      "uses": ["窒素肥料", "硝酸の原料（オストワルト法）", "冷媒"],
+      "hazards": ["毒性・腐食性。眼や気道を強く刺激する"],
+      "structure": { "type": "molecule", "atoms": [["N",0,0],["H",-0.9,0.55],["H",0.9,0.55],["H",0,-1]], "bonds": [[0,1,1],[0,2,1],[0,3,1]] }
+    },
+    {
+      "id": "nh4cl", "name": "塩化アンモニウム", "nameEn": "Ammonium chloride", "formula": "NH4Cl",
+      "category": "inorganic", "kind": "化合物", "state": "solid", "color": "#ffffff", "unlock": "product",
+      "properties": { "appearance": "白色の結晶", "decomposition": "約 338 °C で NH₃ と HCl に解離（昇華のように見える）" },
+      "description": "NH₄⁺ は正四面体形。水溶液は NH₄⁺ の加水分解により弱酸性を示す。",
+      "uses": ["乾電池の電解質", "肥料", "はんだ付けのフラックス"],
+      "hazards": ["加熱分解で有毒ガスを生じる"],
+      "structure": { "type": "ionic", "ions": [["NH4","+",1],["Cl","-",1]] }
+    },
+    {
+      "id": "co2", "name": "二酸化炭素", "nameEn": "Carbon dioxide", "formula": "CO2",
+      "category": "inorganic", "kind": "化合物", "state": "gas", "color": "#f2f5fa", "unlock": "product",
+      "properties": { "appearance": "無色・無臭の気体", "sublimation": "−78.5 °C（1 atm で昇華。固体はドライアイス）" },
+      "description": "直線形分子（sp 混成の C）。C=O 結合は極性をもつが分子全体の双極子モーメントは 0。水に溶けると一部が炭酸 H₂CO₃ となり弱酸性を示す。",
+      "uses": ["炭酸飲料", "消火剤", "ドライアイス（冷却）"],
+      "hazards": ["高濃度では窒息・CO₂ 中毒"],
+      "structure": { "type": "molecule", "atoms": [["O",-1,0],["C",0,0],["O",1,0]], "bonds": [[0,1,2],[1,2,2]] }
+    },
+    {
+      "id": "na2co3", "name": "炭酸ナトリウム", "nameEn": "Sodium carbonate", "formula": "Na2CO3",
+      "category": "inorganic", "kind": "化合物", "state": "solid", "color": "#ffffff", "unlock": "product",
+      "properties": { "appearance": "白色の粉末（ソーダ灰）", "mp": 851 },
+      "description": "CO₃²⁻ の加水分解により水溶液は塩基性（0.1 mol/L で pH 約 11.6）。工業的にはアンモニアソーダ法（ソルベー法）で作られる。",
+      "uses": ["ガラスの原料", "洗剤", "中和滴定の一次標準物質"],
+      "hazards": ["眼刺激性"],
+      "structure": { "type": "ionic", "ions": [["Na","+",2],["CO3","2-",1]] }
+    },
+    {
+      "id": "cao", "name": "酸化カルシウム（生石灰）", "nameEn": "Calcium oxide", "formula": "CaO",
+      "category": "inorganic", "kind": "化合物", "state": "solid", "color": "#fbfbf6", "unlock": "product",
+      "properties": { "appearance": "白色の固体", "mp": 2613, "crystal": "岩塩型構造" },
+      "description": "塩基性酸化物。水と激しく発熱しながら反応して Ca(OH)₂ を生じる（乾燥剤・加熱剤として利用）。",
+      "uses": ["乾燥剤", "製鉄（スラグ形成）", "消石灰の原料"],
+      "hazards": ["水と反応して発熱。眼に入ると重篤な損傷"],
+      "structure": { "type": "ionic", "ions": [["Ca","2+",1],["O","2-",1]], "lattice": "rocksalt" }
+    },
+    {
+      "id": "caoh2", "name": "水酸化カルシウム（消石灰）", "nameEn": "Calcium hydroxide", "formula": "Ca(OH)2",
+      "category": "inorganic", "kind": "化合物", "state": "solid", "color": "#fdfdfd", "unlock": "product",
+      "properties": { "appearance": "白色の粉末", "decomposition": "約 512 °C で CaO と H₂O に分解", "solubility": "水に少し溶ける（約 0.17 g/100 mL, 20 °C）。飽和水溶液が石灰水" },
+      "description": "強塩基だが溶解度が小さい。溶解度が温度とともに減少する（溶解が発熱的）珍しい例。",
+      "uses": ["石灰水（CO₂ の検出）", "土壌改良", "しっくい"],
+      "hazards": ["眼に対する腐食性"],
+      "structure": { "type": "ionic", "ions": [["Ca","2+",1],["OH","-",2]] }
+    },
+    {
+      "id": "ch3cl", "name": "クロロメタン", "nameEn": "Chloromethane", "formula": "CH3Cl",
+      "category": "organic", "kind": "化合物", "state": "gas", "color": "#f0fff0", "unlock": "product",
+      "properties": { "appearance": "無色の気体（かすかな甘い臭い）", "mp": -97.4, "bp": -24.2 },
+      "description": "塩化メチル。C–Cl 結合が分極しており、炭素が求電子中心となって SN2 反応を受ける（メチル化剤）。",
+      "uses": ["シリコーン樹脂の原料", "メチル化剤"],
+      "hazards": ["引火性・神経毒性"],
+      "structure": { "type": "molecule", "atoms": [["C",0,0],["H",0,-1],["H",0,1],["H",-1,0],["Cl",1.1,0]], "bonds": [[0,1,1],[0,2,1],[0,3,1],[0,4,1]] }
+    },
+    {
+      "id": "c2h4", "name": "エチレン", "nameEn": "Ethylene (ethene)", "formula": "C2H4",
+      "category": "organic", "kind": "化合物", "state": "gas", "color": "#f3f6ff", "unlock": "product",
+      "properties": { "appearance": "無色の気体（かすかな甘い臭い）", "mp": -169.2, "bp": -103.7 },
+      "description": "最も単純なアルケン。sp² 炭素からなる平面分子で、C=C は σ 結合 1 本と π 結合 1 本からなる。π 電子は核から離れて弱く束縛されているため、求電子剤の攻撃を受けて付加反応を起こす。",
+      "uses": ["ポリエチレンの原料", "エタノール・エチレンオキシドの原料", "植物ホルモン（果実の成熟）"],
+      "hazards": ["極めて引火性が高い"],
+      "structure": { "type": "molecule", "atoms": [["C",0,0],["C",1.1,0],["H",-0.6,-0.85],["H",-0.6,0.85],["H",1.7,-0.85],["H",1.7,0.85]], "bonds": [[0,1,2],[0,2,1],[0,3,1],[1,4,1],[1,5,1]] }
+    },
+    {
+      "id": "c2h6", "name": "エタン", "nameEn": "Ethane", "formula": "C2H6",
+      "category": "organic", "kind": "化合物", "state": "gas", "color": "#f3f6ff", "unlock": "product",
+      "properties": { "appearance": "無色・無臭の気体", "mp": -182.8, "bp": -88.5 },
+      "description": "C–C 単結合まわりの回転障壁は約 12 kJ/mol と小さく、ねじれ形配座が安定（重なり形との差は H–H 間の立体反発と超共役で説明される）。",
+      "uses": ["エチレン製造（熱分解）の原料", "燃料"],
+      "hazards": ["極めて引火性が高い"],
+      "structure": { "type": "molecule", "atoms": [["C",0,0],["C",1,0],["H",0,-1],["H",0,1],["H",-1,0],["H",1,-1],["H",1,1],["H",2,0]], "bonds": [[0,1,1],[0,2,1],[0,3,1],[0,4,1],[1,5,1],[1,6,1],[1,7,1]] }
+    },
+    {
+      "id": "et2o", "name": "ジエチルエーテル", "nameEn": "Diethyl ether", "formula": "(C2H5)2O",
+      "category": "organic", "kind": "化合物", "state": "liquid", "color": "#f6f8ff", "unlock": "product", "tags": ["solvent"],
+      "properties": { "appearance": "無色・揮発性の液体（特有の甘い臭い）", "mp": -116.3, "bp": 34.6 },
+      "description": "分子間で水素結合を作れないため、同程度の分子量のアルコール（1-ブタノール, bp 118 °C）より沸点がはるかに低い。グリニャール試薬の溶媒として重要（O の非共有電子対が Mg に配位して安定化）。",
+      "uses": ["抽出溶媒", "グリニャール反応の溶媒", "（歴史的）吸入麻酔薬"],
+      "hazards": ["極めて引火性が高い（引火点 −45 °C）。長期保存で爆発性の過酸化物を生じる"],
+      "structure": { "type": "molecule", "atoms": [["H3C",0,0.5],["CH2",1.1,0],["O",2.2,0.5],["CH2",3.3,0],["CH3",4.4,0.5]], "bonds": [[0,1,1],[1,2,1],[2,3,1],[3,4,1]] }
+    },
+    {
+      "id": "etoac", "name": "酢酸エチル", "nameEn": "Ethyl acetate", "formula": "CH3COOC2H5",
+      "category": "organic", "kind": "化合物", "state": "liquid", "color": "#fff8f0", "unlock": "product", "tags": ["solvent"],
+      "properties": { "appearance": "無色の液体（果実のような香り）", "mp": -83.6, "bp": 77.1 },
+      "description": "代表的なエステル。カルボニル炭素は求電子的で、塩基性条件で加水分解（けん化）される。中程度の極性をもつ非プロトン性溶媒で、抽出やクロマトグラフィーの展開溶媒として多用される。",
+      "uses": ["溶媒（塗料・接着剤）", "抽出・カラムクロマトグラフィー", "香料"],
+      "hazards": ["引火性液体"],
+      "structure": { "type": "molecule", "atoms": [["H3C",0,0],["C",1.1,0],["O",1.65,-0.9],["O",1.65,0.9],["CH2",2.85,0.9],["CH3",3.45,0]], "bonds": [[0,1,1],[1,2,2],[1,3,1],[3,4,1],[4,5,1]] }
+    },
+    {
+      "id": "ch3coona", "name": "酢酸ナトリウム", "nameEn": "Sodium acetate", "formula": "CH3COONa",
+      "category": "organic", "kind": "化合物", "state": "solid", "color": "#ffffff", "unlock": "product",
+      "properties": { "appearance": "白色の結晶", "mp": 324 },
+      "description": "酢酸の共役塩基のナトリウム塩。酢酸と混合すると緩衝液となる（pH ≈ pKa = 4.76 付近を保つ）。三水和物は過冷却しやすく、カイロ（エコカイロ）に利用される。",
+      "uses": ["緩衝液", "蓄熱材", "食品添加物"],
+      "hazards": [],
+      "structure": { "type": "molecule", "atoms": [["H3C",0,0],["C",1.1,0],["O",1.65,-0.9],["O⁻",1.65,0.9],["Na⁺",2.8,0.9]], "bonds": [[0,1,1],[1,2,2],[1,3,1]] }
+    },
+    {
+      "id": "c2h4br2", "name": "1,2-ジブロモエタン", "nameEn": "1,2-Dibromoethane", "formula": "C2H4Br2",
+      "category": "organic", "kind": "化合物", "state": "liquid", "color": "#fbf4ee", "unlock": "product",
+      "properties": { "appearance": "無色の重い液体", "mp": 9.8, "bp": 131.6, "density": "2.18 g/cm³" },
+      "description": "エチレンへの臭素の付加生成物。2 個の Br は互いにアンチ付加したもの（エチレンでは立体異性体は生じないが、置換アルケンでは立体化学が観測できる）。",
+      "uses": ["（歴史的）有鉛ガソリンの添加剤", "燻蒸剤（現在は多くの国で禁止）"],
+      "hazards": ["毒性・発がん性"],
+      "structure": { "type": "molecule", "atoms": [["C",0,0],["C",1,0],["Br",-1.1,0],["H",0,-1],["H",0,1],["Br",2.1,0],["H",1,-1],["H",1,1]], "bonds": [[0,1,1],[0,2,1],[0,3,1],[0,4,1],[1,5,1],[1,6,1],[1,7,1]] }
+    },
+    {
+      "id": "bromoethanol", "name": "2-ブロモエタノール", "nameEn": "2-Bromoethanol", "formula": "BrCH2CH2OH",
+      "category": "organic", "kind": "化合物", "state": "liquid", "color": "#fbf6ee", "unlock": "product",
+      "properties": { "appearance": "無色〜淡黄色の液体", "bp": "約 150 °C（分解を伴う）" },
+      "description": "ブロモヒドリン（ハロヒドリン）の一種。塩基で処理すると分子内 SN2 によりエチレンオキシド（エポキシド）を生じる。",
+      "uses": ["有機合成中間体"],
+      "hazards": ["毒性"],
+      "structure": { "type": "molecule", "atoms": [["Br",-1.1,0],["C",0,0],["C",1,0],["O",2,0],["H",2.7,-0.6],["H",0,-1],["H",0,1],["H",1,-1],["H",1,1]], "bonds": [[0,1,1],[1,2,1],[2,3,1],[3,4,1],[1,5,1],[1,6,1],[2,7,1],[2,8,1]] }
+    },
+    {
+      "id": "hbr", "name": "臭化水素", "nameEn": "Hydrogen bromide", "formula": "HBr",
+      "category": "inorganic", "kind": "化合物", "state": "gas", "color": "#fff3ee", "unlock": "product",
+      "properties": { "appearance": "無色・刺激臭の気体。水溶液は臭化水素酸", "mp": -86.9, "bp": -66.8, "pKa": "約 −9" },
+      "description": "HCl より強い酸。H–Br 結合が長く弱い（約 366 kJ/mol）ことと Br⁻ が大きく電荷が分散することが理由。",
+      "uses": ["アルケンへの付加", "臭化物の合成"],
+      "hazards": ["腐食性"],
+      "structure": { "type": "molecule", "atoms": [["H",0,0],["Br",1,0]], "bonds": [[0,1,1]] }
+    },
+    {
+      "id": "zncl2", "name": "塩化亜鉛", "nameEn": "Zinc chloride", "formula": "ZnCl2",
+      "category": "inorganic", "kind": "化合物", "state": "aq", "color": "#f8f8ff", "unlock": "product",
+      "properties": { "appearance": "白色の潮解性固体（生成直後は水溶液）", "mp": 290, "bp": 732 },
+      "description": "ルイス酸性をもち、有機合成でルイス酸触媒としても使われる（例：ルーカス試薬 = ZnCl₂/濃塩酸）。",
+      "uses": ["はんだ付けのフラックス", "ルイス酸触媒", "乾電池"],
+      "hazards": ["腐食性"],
+      "structure": { "type": "ionic", "ions": [["Zn","2+",1],["Cl","-",2]], "note": "形式電荷による表記（結合には共有結合性も大きい）" }
+    },
+    {
+      "id": "agcl", "name": "塩化銀", "nameEn": "Silver chloride", "formula": "AgCl",
+      "category": "inorganic", "kind": "化合物", "state": "solid", "color": "#f5f5f5", "unlock": "product",
+      "properties": { "appearance": "白色の沈殿（光で分解し紫〜黒色に変化）", "mp": 455, "solubility": "Ksp = 1.8×10⁻¹⁰（25 °C）" },
+      "description": "水にきわめて溶けにくい。アンモニア水には [Ag(NH₃)₂]⁺ を作って溶ける（錯形成による溶解）。",
+      "uses": ["Cl⁻ の検出・定量", "参照電極（Ag/AgCl 電極）"],
+      "hazards": [],
+      "structure": { "type": "ionic", "ions": [["Ag","+",1],["Cl","-",1]], "lattice": "rocksalt" }
+    },
+    {
+      "id": "nano3", "name": "硝酸ナトリウム", "nameEn": "Sodium nitrate", "formula": "NaNO3",
+      "category": "inorganic", "kind": "化合物", "state": "aq", "color": "#ffffff", "unlock": "product",
+      "properties": { "appearance": "無色の結晶（生成直後は水溶液中に溶けている）", "mp": 308 },
+      "description": "チリ硝石の主成分。NO₃⁻ は平面三角形で、3 つの等価な共鳴構造をもつ。",
+      "uses": ["肥料", "酸化剤"],
+      "hazards": ["酸化性固体"],
+      "structure": { "type": "ionic", "ions": [["Na","+",1],["NO3","-",1]] }
+    },
+    {
+      "id": "fes", "name": "硫化鉄(II)", "nameEn": "Iron(II) sulfide", "formula": "FeS",
+      "category": "inorganic", "kind": "化合物", "state": "solid", "color": "#3b3833", "unlock": "product",
+      "properties": { "appearance": "黒色の固体", "mp": 1194 },
+      "description": "希酸と反応して硫化水素 H₂S を発生する（実験室での H₂S 発生法）。",
+      "uses": ["硫化水素の発生源（実験室）"],
+      "hazards": ["酸と反応して猛毒の H₂S を発生"],
+      "structure": { "type": "ionic", "ions": [["Fe","2+",1],["S","2-",1]] }
+    },
+    {
+      "id": "cuo", "name": "酸化銅(II)", "nameEn": "Copper(II) oxide", "formula": "CuO",
+      "category": "inorganic", "kind": "化合物", "state": "solid", "color": "#2a2626", "unlock": "product",
+      "properties": { "appearance": "黒色の粉末", "mp": 1326 },
+      "description": "塩基性酸化物で、希酸に溶けて青色の Cu²⁺ 水溶液となる。加熱した CuO は H₂ や有機物を酸化する（有機元素分析で利用）。",
+      "uses": ["有機元素分析の酸化剤", "顔料"],
+      "hazards": ["水生生物に有害"],
+      "structure": { "type": "ionic", "ions": [["Cu","2+",1],["O","2-",1]] }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1222">
+  <meta name="description" content="大学レベルの化学を実験しながら学ぶ、スマートフォン向け化学反応シミュレーションゲーム">
+  <title>ケミラボ ― 化学反応研究所</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon.svg">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="splash"><div class="splash-flask">⚗️</div><p>研究所を準備中…</p></div>
+  <header class="topbar">
+    <div class="brand"><span class="logo">⚗</span><span>ケミラボ<small>見習い研究者</small></span></div>
+    <div class="hdr-stats" id="hdrStats"></div>
+  </header>
+  <main id="view"></main>
+  <nav class="tabs" id="tabs" aria-label="メインメニュー"></nav>
+  <div id="fatal" hidden></div>
+  <noscript>このゲームを遊ぶには JavaScript を有効にしてください。</noscript>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
